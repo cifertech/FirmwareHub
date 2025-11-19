@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FirmwareHub · CiferTech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --radius-xl: 20px;
+      --radius-md: 12px;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #010409;
+      --bg-soft: #0d1117;
+      --body-gradient:
+        radial-gradient(circle at 0 0, #0d1117 0, transparent 45%),
+        radial-gradient(circle at 100% 100%, #010409 0, #000 70%);
+      --shell-bg: linear-gradient(145deg, rgba(13,17,23,0.95), rgba(22,27,34,0.98));
+      --shell-border: rgba(110,118,129,0.35);
+      --shell-shadow:
+        0 30px 120px rgba(1,4,9,0.9),
+        0 0 0 1px rgba(15,23,42,0.8) inset;
+      --panel: rgba(22,27,34,0.94);
+      --panel-border: rgba(110,118,129,0.35);
+      --panel-overlay:
+        radial-gradient(circle at 0 0, rgba(47,129,247,0.7), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(56,189,248,0.6), transparent 60%);
+      --surface: rgba(13,17,23,0.94);
+      --surface-strong: rgba(13,17,23,1);
+      --border: rgba(110,118,129,0.35);
+      --shadow-soft: 0 10px 26px rgba(1,4,9,0.75);
+      --accent: #2f81f7;
+      --accent-soft: rgba(47,129,247,0.18);
+      --accent-contrast: #010409;
+      --text-main: #e6edf3;
+      --text-soft: #8b949e;
+      --danger: #f85149;
+      --danger-surface: rgba(248,81,73,0.18);
+      --danger-border: rgba(248,81,73,0.65);
+      --danger-text: #ffe4e1;
+      --input-bg: rgba(13,17,23,0.94);
+      --tag-dot-online: #4ade80;
+    }
+
+    body[data-theme="light"] {
+      --bg: #f6f8fa;
+      --bg-soft: #ffffff;
+      --body-gradient: linear-gradient(180deg, #ffffff 0%, #f6f8fa 100%);
+      --shell-bg: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(232,236,242,0.96));
+      --shell-border: rgba(31,35,40,0.12);
+      --shell-shadow:
+        0 30px 60px rgba(140,149,159,0.35),
+        0 0 0 1px rgba(31,35,40,0.04) inset;
+      --panel: rgba(255,255,255,0.94);
+      --panel-border: rgba(31,35,40,0.12);
+      --panel-overlay:
+        radial-gradient(circle at 0 0, rgba(9,105,218,0.22), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(56,189,248,0.2), transparent 60%);
+      --surface: rgba(246,248,250,0.96);
+      --surface-strong: #ffffff;
+      --border: rgba(31,35,40,0.12);
+      --shadow-soft: 0 10px 24px rgba(140,149,159,0.25);
+      --accent: #0969da;
+      --accent-soft: rgba(9,105,218,0.15);
+      --accent-contrast: #ffffff;
+      --text-main: #24292f;
+      --text-soft: #57606a;
+      --danger: #cf222e;
+      --danger-surface: rgba(207,34,46,0.12);
+      --danger-border: rgba(207,34,46,0.4);
+      --danger-text: #8c1b23;
+      --input-bg: #ffffff;
+      --tag-dot-online: #1a7f37;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+        "SF Pro Text", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      background-image: var(--body-gradient);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 32px 16px;
+      position: relative;
+      z-index: 0;
+      transition:
+        background 0.3s ease,
+        color 0.3s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(47,129,247,0.18), transparent 45%),
+        radial-gradient(circle at 80% 0%, rgba(56,189,248,0.15), transparent 55%),
+        radial-gradient(circle at 50% 80%, rgba(168,85,247,0.12), transparent 50%);
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1100px;
+      background: var(--shell-bg);
+      border-radius: 28px;
+      border: 1px solid var(--shell-border);
+      box-shadow: var(--shell-shadow);
+      padding: 20px 20px 24px;
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shell::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.05);
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .brand-heading {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: baseline;
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+      letter-spacing: 0.08em;
+      text-transform: none;
+    }
+
+    .brand-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-soft);
+      text-transform: none;
+    }
+
+    .brand-pill.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .header-actions .tag {
+      margin-right: 4px;
+    }
+
+    .docs-link {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      text-decoration: none;
+      background: var(--surface);
+      transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .docs-link:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .support-link {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 7px 14px;
+      text-decoration: none;
+      background: linear-gradient(135deg, #f97316, #f43f5e);
+      box-shadow: 0 14px 30px rgba(244,63,94,0.35);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+      text-transform: none;
+    }
+
+    .support-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 36px rgba(244,63,94,0.45);
+    }
+
+    .remote-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .auto-refresh-status {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .tag {
+      padding: 6px 10px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+    }
+
+    .tag-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--tag-dot-online);
+      box-shadow: 0 0 10px var(--tag-dot-online);
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1.1fr 1fr;
+    }
+
+    .grid-2-bottom {
+      grid-template-columns: 1fr 1.2fr;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2,
+      .grid-2-bottom {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--panel);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--panel-border);
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      transition:
+        border-color 0.25s ease,
+        transform 0.25s ease;
+    }
+
+    .panel:hover {
+      border-color: rgba(56,189,248,0.4);
+      transform: translateY(-1px);
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      opacity: 0.08;
+      background: var(--panel-overlay);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1;
+    }
+
+    .panel-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .panel-body {
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+    }
+
+    button {
+      border-radius: var(--radius-md);
+      border: none;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--accent);
+      color: var(--accent-contrast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      box-shadow: 0 10px 30px rgba(56,189,248,0.35);
+    }
+
+    button:focus-visible,
+    .docs-link:focus-visible,
+    a.link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 40px rgba(56,189,248,0.45);
+      background: #7dd3fc;
+    }
+
+    button.secondary {
+      background: var(--surface);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    button.secondary:hover {
+      background: var(--surface-strong);
+      box-shadow: var(--shadow-soft);
+    }
+
+    button.danger {
+      background: var(--danger-surface);
+      color: var(--danger-text);
+      border: 1px solid var(--danger-border);
+      box-shadow: none;
+    }
+
+    button.danger:hover {
+      background: var(--danger-surface);
+      opacity: 0.8;
+    }
+
+    .btn-small {
+      padding: 6px 9px;
+      font-size: 11px;
+      border-radius: 999px;
+    }
+
+    input[type="file"],
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      font-size: 12px;
+      padding: 8px 9px;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.5);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+      max-height: 150px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+    }
+
+    .label {
+      font-size: 11px;
+      color: var(--text-soft);
+      letter-spacing: 0.08em;
+    }
+
+    .value {
+      font-size: 12px;
+      color: var(--text-main);
+      word-wrap: break-word;
+    }
+
+    .value-soft {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 8px;
+    }
+
+    .metric {
+      background: var(--surface);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      min-height: 64px;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+    }
+
+    .metric-value {
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #f97316;
+      box-shadow: 0 0 8px #f97316;
+      margin-right: 4px;
+    }
+
+    .status-dot.connected {
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    .status-text {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .dropzone {
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--border);
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--surface);
+      transition: border-color 0.12s ease, background 0.12s ease;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .dropzone:hover {
+      border-color: var(--accent);
+      background: var(--surface-strong);
+    }
+
+    .dropzone span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .filename {
+      font-size: 11px;
+      margin-top: 6px;
+      color: var(--text-soft);
+    }
+
+    .progress {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg,#38bdf8,#22c55e,#a855f7);
+      background-size: 200% 100%;
+      animation: progressAnim 1.2s linear infinite;
+      transition: width 0.15s linear;
+    }
+
+    @keyframes progressAnim {
+      from { background-position: 0% 0%; }
+      to   { background-position: 200% 0%; }
+    }
+
+    pre {
+      background: var(--surface-strong);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      font-size: 11px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      max-height: 140px;
+      overflow-y: auto;
+      color: var(--text-main);
+    }
+
+    .log-tag {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .history-list,
+    .github-list {
+      max-height: 130px;
+      overflow-y: auto;
+      padding: 0;
+      margin: 4px 0 0;
+      list-style: none;
+      font-size: 12px;
+    }
+
+    .history-item,
+    .github-item {
+      padding: 6px 7px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .history-item span,
+    .github-item span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+
+    .label-chip {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+    }
+
+    .console-input-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .console-input-row input {
+      flex: 1;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+    }
+
+    a.link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    a.link:hover {
+      text-decoration: underline;
+    }
+    .theme-toggle {
+      width: 34px;
+      height: 32px;
+      padding: 0;
+      font-size: 16px;
+    }
+
+    .theme-toggle span {
+      line-height: 1;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+<div class="shell">
+  <header>
+    <div class="brand">
+      <div class="brand-heading">
+        <div class="brand-title">FirmwareHub</div>
+        <div class="brand-sub">Created by CiferTech · ESP32 / ESP8266 Browser Flasher</div>
+      </div>
+      <div class="brand-pills">
+        <span class="brand-pill accent">WebSerial Ready</span>
+        <span class="brand-pill">Secure USB</span>
+        <span class="brand-pill">OTA Helper</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="tag">
+        <div id="connDot" class="tag-dot"></div>
+        <span id="connLabel">No device</span>
+      </div>
+      <a class="docs-link" href="https://github.com/cifertech" target="_blank" rel="noreferrer">
+        Docs &amp; Repo
+      </a>
+      <a class="support-link" href="https://www.patreon.com/cifertech" target="_blank" rel="noreferrer">
+        ❤️ Support on Patreon
+      </a>
+      <button id="themeToggle" class="secondary btn-small theme-toggle" aria-label="Switch theme" title="Toggle theme">
+        <span id="themeToggleIcon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- TOP ROW: CONNECTION + LOCAL FLASH -->
+  <div class="grid grid-2">
+    <!-- Connection / Chip Info -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Device</div>
+        <div class="badge mono" id="chipFamilyBadge">No chip</div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <button id="connectBtn">
+            <span>🔌 Connect & Detect</span>
+          </button>
+          <button id="disconnectBtn" class="secondary btn-small">
+            Disconnect
+          </button>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">Chip</div>
+            <div class="metric-value mono" id="chipName">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Flash ID</div>
+            <div class="metric-value mono" id="flashId">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Flash Size</div>
+            <div class="metric-value mono" id="flashSize">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">MAC</div>
+            <div class="metric-value mono" id="macAddr">—</div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:6px;align-items:center;">
+          <div class="status-dot" id="statusDot"></div>
+          <div class="status-text" id="statusText">Idle</div>
+        </div>
+
+        <div class="hint">
+          Tip: if connect fails, hold <span class="mono">BOOT</span> on the board while clicking
+          <span class="mono">Connect &amp; Detect</span>.
+        </div>
+      </div>
+    </section>
+
+    <!-- Local Flash -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Local Firmware</div>
+        <div class="badge">Merged .bin · Offset 0x0</div>
+      </div>
+      <div class="panel-body">
+        <div id="dropzone" class="dropzone">
+          <div>Drop a <span>.bin</span> here or click to browse</div>
+          <div id="filename" class="filename">No file selected</div>
+          <input id="firmwareInput" type="file" accept=".bin" style="display:none;" />
+        </div>
+
+        <div>
+          <div class="label">Flash progress</div>
+          <div class="progress">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="flashLocalBtn">
+            🚀 Flash Local Firmware
+          </button>
+          <button id="eraseBtn" class="secondary btn-small">
+            Erase Flash (Full)
+          </button>
+        </div>
+
+        <div class="log-tag">Flasher log</div>
+        <pre id="log"></pre>
+      </div>
+    </section>
+  </div>
+
+  <!-- BOTTOM ROW: GITHUB / OTA + CONSOLE -->
+  <div class="grid grid-2-bottom">
+    <!-- GitHub / OTA / History -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Remote Firmware · OTA Helper</div>
+        <div class="badge" id="remoteRefreshBadge">GitHub Releases · Auto</div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div>
+            <div class="label">Project</div>
+            <select id="projectSelect">
+              <option value="cifertech/ESP32-DIV">ESP32-DIV</option>
+              <option value="cifertech/nRFBox">nRFBox</option>
+              <option value="cifertech/RF-Clown">RF-Clown</option>
+              <option value="custom">Custom…</option>
+            </select>
+          </div>
+          <div style="flex:1;">
+            <div class="label">GitHub Repo</div>
+            <input id="repoInput" type="text" class="mono"
+                   value="cifertech/ESP32-DIV"
+                   title="owner/repo, e.g. cifertech/RF-Clown" />
+          </div>
+          <button id="loadReleasesBtn" class="secondary btn-small" style="margin-top:18px;">
+            Refresh
+          </button>
+        </div>
+
+        <div class="remote-meta" style="margin-top:4px;">
+          <div class="label">Available firmware assets (.bin)</div>
+          <div class="auto-refresh-status" id="remoteRefreshStatus">Auto refresh warming up…</div>
+        </div>
+        <ul id="githubList" class="github-list"></ul>
+
+        <div class="label" style="margin-top:6px;">Selected remote firmware</div>
+        <div class="value-soft mono" id="selectedRemote">—</div>
+        <div class="row" style="margin-top:4px;">
+          <button id="flashRemoteBtn" class="btn-small">
+            ⚡ Flash Selected Remote
+          </button>
+          <button id="copyOtaUrlBtn" class="secondary btn-small">
+            Copy OTA URL
+          </button>
+        </div>
+
+        <div class="label" style="margin-top:10px;">Flash history (local + remote)</div>
+        <ul id="historyList" class="history-list"></ul>
+      </div>
+    </section>
+
+    <!-- Console -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Serial Console</div>
+        <div class="badge">Monitor · Send commands</div>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <button id="openConsoleBtn" class="secondary btn-small">
+            🧪 Open Console Port
+          </button>
+          <button id="closeConsoleBtn" class="secondary btn-small">
+            Close
+          </button>
+          <select id="baudSelect" style="width:auto;">
+            <option value="115200" selected>115200</option>
+            <option value="921600">921600</option>
+            <option value="74880">74880</option>
+            <option value="57600">57600</option>
+            <option value="38400">38400</option>
+            <option value="19200">19200</option>
+            <option value="9600">9600</option>
+          </select>
+        </div>
+
+        <div class="log-tag">Console</div>
+        <pre id="consoleLog"></pre>
+
+        <div class="console-input-row">
+          <input id="consoleInput" type="text" placeholder="Type command and press Send (adds \\n)" />
+          <button id="consoleSendBtn" class="btn-small">Send</button>
+        </div>
+
+        <div class="hint">
+          Console is independent from bootloader flashing. After flashing, open console again to see your firmware logs.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div style="text-align:right;font-size:10px;color:var(--text-soft);margin-top:4px;">
+    FirmwareHub by CiferTech · Built on WebSerial + esptool-js 
+  </div>
+</div>
+
+<!-- SCRIPT -->
+<script type="module">
+  import { ESPLoader, Transport } from "https://cdn.jsdelivr.net/npm/esptool-js@0.4.5/bundle.js";
+
+  // Elements
+  const connDot   = document.getElementById("connDot");
+  const connLabel = document.getElementById("connLabel");
+  const chipFamilyBadge = document.getElementById("chipFamilyBadge");
+  const chipNameEl = document.getElementById("chipName");
+  const flashIdEl = document.getElementById("flashId");
+  const flashSizeEl = document.getElementById("flashSize");
+  const macAddrEl = document.getElementById("macAddr");
+  const statusDot = document.getElementById("statusDot");
+  const statusText = document.getElementById("statusText");
+
+  const dropzone = document.getElementById("dropzone");
+  const firmwareInput = document.getElementById("firmwareInput");
+  const filenameEl = document.getElementById("filename");
+  const progressBar = document.getElementById("progressBar");
+  const logEl = document.getElementById("log");
+
+  const projectSelect = document.getElementById("projectSelect");
+  const repoInput = document.getElementById("repoInput");
+  const loadReleasesBtn = document.getElementById("loadReleasesBtn");
+  const githubList = document.getElementById("githubList");
+  const selectedRemoteEl = document.getElementById("selectedRemote");
+  const historyList = document.getElementById("historyList");
+  const remoteRefreshStatus = document.getElementById("remoteRefreshStatus");
+  const remoteRefreshBadge = document.getElementById("remoteRefreshBadge");
+
+  const consoleLog = document.getElementById("consoleLog");
+  const consoleInput = document.getElementById("consoleInput");
+  const baudSelect = document.getElementById("baudSelect");
+  const themeToggleBtn = document.getElementById("themeToggle");
+  const themeToggleIcon = document.getElementById("themeToggleIcon");
+
+  // State
+  let devicePort = null;
+  let transport = null;
+  let esploader = null;
+  let firmwareBuffer = null;
+  let firmwareName = null;
+
+  let selectedRemoteAsset = null;
+  let githubAssets = [];
+  let history = [];
+  const REMOTE_REFRESH_INTERVAL = 120000;
+  let remoteRefreshTimer = null;
+  let releasesLoading = false;
+  if (remoteRefreshBadge) {
+    const minutesLabel =
+      Math.max(1, Math.round(REMOTE_REFRESH_INTERVAL / 60000)) + "m";
+    remoteRefreshBadge.textContent = "GitHub Releases · Auto " + minutesLabel;
+  }
+
+  let consolePort = null;
+  let consoleReader = null;
+  let consoleWriter = null;
+  const THEME_KEY = "cifertech_flasher_theme";
+
+  function appendLog(msg) {
+    const time = new Date().toLocaleTimeString();
+    logEl.textContent += "[" + time + "] " + msg + "\\n";
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function setStatus(text, mode = "normal") {
+    statusText.textContent = text;
+    statusDot.classList.remove("connected");
+    if (mode === "connected") {
+      statusDot.classList.add("connected");
+    }
+    if (mode === "error") {
+      statusDot.style.background = "#f97373";
+      statusDot.style.boxShadow = "0 0 8px #f97373";
+    } else {
+      statusDot.style.background = mode === "connected" ? "#22c55e" : "#f97316";
+      statusDot.style.boxShadow =
+        "0 0 8px " + (mode === "connected" ? "#22c55e" : "#f97316");
+    }
+  }
+
+  function setConnectionUi(connected, chipFamily) {
+    if (connected) {
+      connDot.style.background = "#22c55e";
+      connDot.style.boxShadow = "0 0 10px #22c55e";
+      connLabel.textContent = "Connected · " + (chipFamily || "ESP");
+    } else {
+      connDot.style.background = "#f97316";
+      connDot.style.boxShadow = "0 0 10px #f97316";
+      connLabel.textContent = "No device";
+      chipFamilyBadge.textContent = "No chip";
+      chipNameEl.textContent = "—";
+      flashIdEl.textContent = "—";
+      flashSizeEl.textContent = "—";
+      macAddrEl.textContent = "—";
+    }
+  }
+
+  function setProgress(p) {
+    progressBar.style.width = p + "%";
+  }
+
+  function addHistoryEntry(entry) {
+    history.unshift({
+      ...entry,
+      ts: new Date().toISOString(),
+    });
+    history = history.slice(0, 15);
+    localStorage.setItem("cifertech_flasher_history", JSON.stringify(history));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    historyList.innerHTML = "";
+    if (!history.length) {
+      const li = document.createElement("li");
+      li.className = "history-item";
+      li.innerHTML = "<span>No history yet</span>";
+      historyList.appendChild(li);
+      return;
+    }
+    history.forEach((h) => {
+      const li = document.createElement("li");
+      li.className = "history-item";
+      const left = document.createElement("span");
+      left.textContent = h.name;
+      const right = document.createElement("span");
+      right.className = "label-chip";
+      right.textContent = h.type;
+      li.appendChild(left);
+      li.appendChild(right);
+      historyList.appendChild(li);
+    });
+  }
+
+  function loadHistoryFromStorage() {
+    try {
+      const raw = localStorage.getItem("cifertech_flasher_history");
+      if (raw) history = JSON.parse(raw);
+    } catch (e) {
+      history = [];
+    }
+    renderHistory();
+  }
+
+  loadHistoryFromStorage();
+
+  function setRemoteRefreshStatus(text) {
+    if (remoteRefreshStatus) {
+      remoteRefreshStatus.textContent = text;
+    }
+  }
+
+  function highlightGithubSelection(target) {
+    Array.from(githubList.children).forEach((item) => {
+      item.style.borderColor = "var(--border)";
+    });
+    if (target) {
+      target.style.borderColor = "rgba(56,189,248,0.8)";
+    }
+  }
+
+  function selectRemoteAsset(asset, listItem) {
+    if (asset) {
+      selectedRemoteEl.textContent =
+        asset.name + " (" + (asset.releaseTag || "release") + ")";
+    } else {
+      selectedRemoteEl.textContent = "—";
+    }
+    selectedRemoteAsset = asset || null;
+    highlightGithubSelection(listItem);
+  }
+
+  function startRemoteAutoRefresh() {
+    if (remoteRefreshTimer) clearInterval(remoteRefreshTimer);
+    remoteRefreshTimer = setInterval(() => {
+      if (document.hidden) return;
+      loadGitHubReleases({ silent: true, trigger: "auto" });
+    }, REMOTE_REFRESH_INTERVAL);
+  }
+
+  function applyTheme(theme) {
+    const nextTheme = theme === "light" ? "light" : "dark";
+    document.body.dataset.theme = nextTheme;
+    const icon = nextTheme === "light" ? "🌙" : "☀️";
+    const label =
+      nextTheme === "light" ? "Switch to dark mode" : "Switch to light mode";
+    themeToggleIcon.textContent = icon;
+    themeToggleBtn.setAttribute("aria-label", label);
+    themeToggleBtn.setAttribute("title", label);
+    try {
+      localStorage.setItem(THEME_KEY, nextTheme);
+    } catch (_) {}
+  }
+
+  const storedTheme = (() => {
+    try {
+      return localStorage.getItem(THEME_KEY);
+    } catch (_) {
+      return null;
+    }
+  })();
+  const prefersLight = window.matchMedia
+    ? window.matchMedia("(prefers-color-scheme: light)").matches
+    : false;
+  applyTheme(storedTheme || (prefersLight ? "light" : "dark"));
+
+  themeToggleBtn.addEventListener("click", () => {
+    const current = document.body.dataset.theme || "dark";
+    applyTheme(current === "dark" ? "light" : "dark");
+  });
+
+  async function loadGitHubReleases({ silent = false, trigger = "manual" } = {}) {
+    const repo = repoInput.value.trim();
+    if (!repo || !repo.includes("/")) {
+      if (!silent) {
+        alert("Repo format should be owner/repo, e.g. cifertech/RF-Clown");
+      }
+      setRemoteRefreshStatus("Invalid repo format");
+      return false;
+    }
+
+    if (releasesLoading) {
+      setRemoteRefreshStatus("Refresh already running…");
+      return false;
+    }
+
+    releasesLoading = true;
+
+    if (!silent && loadReleasesBtn) {
+      loadReleasesBtn.disabled = true;
+      loadReleasesBtn.textContent = "Refreshing…";
+    }
+
+    const previousSelection = selectedRemoteAsset ? selectedRemoteAsset.name : null;
+    setRemoteRefreshStatus("Refreshing…");
+
+    try {
+      const url = "https://api.github.com/repos/" + repo + "/releases";
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("GitHub API: " + res.status);
+      const releases = await res.json();
+
+      const nextAssets = [];
+      releases.forEach((rel) => {
+        (rel.assets || []).forEach((asset) => {
+          if (asset.name && asset.name.endsWith(".bin")) {
+            nextAssets.push({
+              releaseTag: rel.tag_name,
+              name: asset.name,
+              url: asset.browser_download_url,
+            });
+          }
+        });
+      });
+
+      githubAssets = nextAssets;
+      githubList.innerHTML = "";
+
+      if (!githubAssets.length) {
+        const li = document.createElement("li");
+        li.className = "github-item";
+        li.innerHTML = "<span>No .bin assets found.</span>";
+        githubList.appendChild(li);
+        selectRemoteAsset(null, null);
+        setRemoteRefreshStatus("No .bin assets");
+        return true;
+      }
+
+      githubAssets.forEach((a) => {
+        const li = document.createElement("li");
+        li.className = "github-item";
+        const left = document.createElement("span");
+        left.textContent = a.name;
+        const right = document.createElement("span");
+        right.className = "label-chip";
+        right.textContent = a.releaseTag || "release";
+        li.appendChild(left);
+        li.appendChild(right);
+        li.onclick = () => selectRemoteAsset(a, li);
+        githubList.appendChild(li);
+      });
+
+      const preferredIndex = previousSelection
+        ? githubAssets.findIndex((a) => a.name === previousSelection)
+        : -1;
+      const targetIndex = preferredIndex >= 0 ? preferredIndex : 0;
+      const targetAsset = githubAssets[targetIndex];
+      const targetItem = githubList.children[targetIndex];
+
+      if (targetAsset && targetItem) {
+        selectRemoteAsset(targetAsset, targetItem);
+      } else {
+        selectRemoteAsset(null, null);
+      }
+
+      const label = trigger === "auto" ? "Auto refreshed" : "Updated";
+      setRemoteRefreshStatus(label + " " + new Date().toLocaleTimeString());
+      return true;
+    } catch (e) {
+      console.error(e);
+      githubList.innerHTML = "";
+      const li = document.createElement("li");
+      li.className = "github-item";
+      li.innerHTML = "<span>Error loading releases.</span>";
+      githubList.appendChild(li);
+      if (!silent) {
+        alert("Error loading releases.");
+      }
+      setRemoteRefreshStatus("Refresh failed");
+      return false;
+    } finally {
+      if (!silent && loadReleasesBtn) {
+        loadReleasesBtn.disabled = false;
+        loadReleasesBtn.textContent = "Refresh";
+      }
+      releasesLoading = false;
+    }
+  }
+
+  function handleRepoChange({ silent = false, trigger = "manual" } = {}) {
+    loadGitHubReleases({ silent, trigger }).then((success) => {
+      if (success) startRemoteAutoRefresh();
+    });
+  }
+
+  // project selector (RF-Clown, ESP32-DIV, nRFBox, custom)
+  projectSelect.addEventListener("change", () => {
+    const v = projectSelect.value;
+    if (v !== "custom") {
+      repoInput.value = v;
+      handleRepoChange({ silent: false, trigger: "project" });
+    } else {
+      repoInput.focus();
+    }
+  });
+
+  repoInput.addEventListener("change", () => {
+    handleRepoChange({ silent: false, trigger: "repo-input" });
+  });
+
+  if (loadReleasesBtn) {
+    loadReleasesBtn.addEventListener("click", () => {
+      handleRepoChange({ silent: false, trigger: "manual" });
+    });
+  }
+
+  handleRepoChange({ silent: true, trigger: "init" });
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      loadGitHubReleases({ silent: true, trigger: "visibility" });
+    }
+  });
+
+  // ========= CONNECTION & INFO =========
+  document.getElementById("connectBtn").onclick = async () => {
+    try {
+      if (!("serial" in navigator)) {
+        alert("WebSerial not supported. Use Chrome/Edge on desktop.");
+        return;
+      }
+
+      setStatus("Requesting port…");
+      const port = await navigator.serial.requestPort();
+      await port.open({ baudRate: 115200 });
+
+      devicePort = port;
+      transport = new Transport(port);
+      esploader = new ESPLoader({
+        transport,
+        baudrate: 115200,
+        romBaudrate: 115200,
+        enableTracing: false,
+      });
+
+      appendLog("Connecting to chip…");
+      setStatus("Connecting…");
+
+      await esploader.main();        // bootloader + stub
+      await esploader.flashId();     // probe flash
+
+      const chipFamily = esploader.chip.CHIP_NAME || "ESP";
+      chipFamilyBadge.textContent = chipFamily;
+
+      setConnectionUi(true, chipFamily);
+      setStatus("Connected (" + chipFamily + ")", "connected");
+      appendLog("Connected · Chip: " + chipFamily);
+
+      // Flash info
+      try {
+        const id = await esploader.flashId();
+        flashIdEl.textContent = "0x" + id.toString(16);
+      } catch (e) {
+        flashIdEl.textContent = "Unknown";
+      }
+
+      try {
+        await esploader.detectFlashSize();
+        const sizeBytes = await esploader.flashSizeBytes();
+        const sizeMb = (sizeBytes / (1024 * 1024)).toFixed(1);
+        flashSizeEl.textContent = sizeMb + " MB";
+      } catch (e) {
+        flashSizeEl.textContent = "detect";
+      }
+
+      try {
+        const mac = await esploader.chip.get_efuse_mac(esploader);
+        macAddrEl.textContent = mac || "—";
+      } catch (e) {
+        macAddrEl.textContent = "—";
+      }
+
+      chipNameEl.textContent = chipFamily;
+
+    } catch (err) {
+      console.error(err);
+      appendLog("Error while connecting: " + err);
+      setStatus("Connect failed", "error");
+      setConnectionUi(false);
+      try {
+        if (devicePort) await devicePort.close();
+      } catch (_) {}
+      devicePort = null;
+      transport = null;
+      esploader = null;
+    }
+  };
+
+  document.getElementById("disconnectBtn").onclick = async () => {
+    try {
+      if (transport) {
+        await transport.disconnect();
+      }
+      if (devicePort && devicePort.readable) {
+        await devicePort.close();
+      }
+    } catch (e) {}
+    devicePort = null;
+    transport = null;
+    esploader = null;
+    setConnectionUi(false);
+    setStatus("Disconnected");
+    appendLog("Disconnected.");
+  };
+
+  // ========= LOCAL FILE HANDLING =========
+  dropzone.onclick = () => firmwareInput.click();
+
+  dropzone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropzone.style.borderColor = "#38bdf8";
+  });
+  dropzone.addEventListener("dragleave", () => {
+    dropzone.style.borderColor = "rgba(148,163,184,0.6)";
+  });
+  dropzone.addEventListener("drop", async (e) => {
+    e.preventDefault();
+    dropzone.style.borderColor = "rgba(148,163,184,0.6)";
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    await handleFirmwareFile(file);
+  });
+
+  firmwareInput.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    await handleFirmwareFile(file);
+  };
+
+  async function handleFirmwareFile(file) {
+    if (!file.name.endsWith(".bin")) {
+      alert("Please select a .bin firmware file.");
+      return;
+    }
+    firmwareName = file.name;
+    filenameEl.textContent = firmwareName;
+    firmwareBuffer = await file.arrayBuffer();
+    appendLog("Loaded local firmware: " + firmwareName + " (" + file.size + " bytes)");
+  }
+
+  // ========= FLASH HELPERS =========
+  async function ensureConnectedForFlash() {
+    if (!devicePort || !esploader) {
+      throw new Error("Device not connected. Click 'Connect & Detect' first.");
+    }
+  }
+
+  async function writeMergedBin(buffer, labelForHistory) {
+    await ensureConnectedForFlash();
+
+    setStatus("Flashing…", "connected");
+    setProgress(2);
+    appendLog("Starting flash…");
+
+    const uint8 = new Uint8Array(buffer);
+    let binStr = "";
+    for (let i = 0; i < uint8.length; i++) {
+      binStr += String.fromCharCode(uint8[i]);
+    }
+
+    const fileArray = [
+      {
+        data: binStr,
+        address: 0x0000, // merged firmware offset
+      },
+    ];
+
+    try {
+      await esploader.writeFlash({
+        fileArray,
+        flashSize: "keep",
+        flashMode: "keep",
+        flashFreq: "keep",
+        eraseAll: false,
+        compress: true,
+        reportProgress: (fileIndex, written, total) => {
+          const pct = Math.floor((written / total) * 100);
+          setProgress(pct);
+          setStatus("Flashing… " + pct + "%", "connected");
+        },
+      });
+
+      setProgress(100);
+      setStatus("Flash done", "connected");
+      appendLog("Flash finished successfully.");
+      addHistoryEntry({
+        type: "local",
+        name: labelForHistory || firmwareName || "local.bin",
+      });
+
+      try {
+        await esploader.after("hard_reset");
+      } catch (e) {}
+    } catch (e) {
+      console.error(e);
+      appendLog("Flash error: " + e);
+      setStatus("Flash error", "error");
+      throw e;
+    }
+  }
+
+  document.getElementById("flashLocalBtn").onclick = async () => {
+    if (!firmwareBuffer) {
+      alert("Select a .bin firmware first.");
+      return;
+    }
+    try {
+      await writeMergedBin(firmwareBuffer, firmwareName);
+    } catch (_) {}
+  };
+
+  document.getElementById("eraseBtn").onclick = async () => {
+    try {
+      await ensureConnectedForFlash();
+      if (!confirm("Full erase will wipe the entire flash. Continue?")) return;
+      setStatus("Erasing flash…", "connected");
+      appendLog("Erasing flash… (this can take a while)");
+      await esploader.eraseFlash();
+      setStatus("Erase done", "connected");
+      appendLog("Erase finished.");
+    } catch (e) {
+      appendLog("Erase error: " + e);
+      setStatus("Erase error", "error");
+    }
+  };
+
+  // ========= GITHUB RELEASES / OTA =========
+  document.getElementById("loadReleasesBtn").onclick = async () => {
+    const repo = repoInput.value.trim();
+    if (!repo || !repo.includes("/")) {
+      alert("Repo format should be owner/repo, e.g. cifertech/RF-Clown");
+      return;
+    }
+
+    githubList.innerHTML = "";
+    selectedRemoteAsset = null;
+    selectedRemoteEl.textContent = "—";
+
+    try {
+      const url = "https://api.github.com/repos/" + repo + "/releases";
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("GitHub API: " + res.status);
+      const releases = await res.json();
+
+      githubAssets = [];
+      releases.forEach((rel) => {
+        (rel.assets || []).forEach((asset) => {
+          if (asset.name && asset.name.endsWith(".bin")) {
+            githubAssets.push({
+              releaseTag: rel.tag_name,
+              name: asset.name,
+              url: asset.browser_download_url,
+            });
+          }
+        });
+      });
+
+      if (!githubAssets.length) {
+        const li = document.createElement("li");
+        li.className = "github-item";
+        li.innerHTML = "<span>No .bin assets found.</span>";
+        githubList.appendChild(li);
+        return;
+      }
+
+      githubAssets.forEach((a, idx) => {
+        const li = document.createElement("li");
+        li.className = "github-item";
+
+        const left = document.createElement("span");
+        left.textContent = a.name;
+        const right = document.createElement("span");
+        right.className = "label-chip";
+        right.textContent = a.releaseTag || "release";
+
+        li.appendChild(left);
+        li.appendChild(right);
+
+        li.onclick = () => {
+          selectedRemoteAsset = a;
+          selectedRemoteEl.textContent =
+            a.name + " (" + (a.releaseTag || "release") + ")";
+          Array.from(githubList.children).forEach((item) => {
+            item.style.borderColor = "rgba(15,23,42,1)";
+          });
+          li.style.borderColor = "rgba(56,189,248,0.8)";
+        };
+
+        githubList.appendChild(li);
+        if (idx === 0) {
+          li.click();
+        }
+      });
+    } catch (e) {
+      console.error(e);
+      const li = document.createElement("li");
+      li.className = "github-item";
+      li.innerHTML = "<span>Error loading releases.</span>";
+      githubList.appendChild(li);
+    }
+  };
+
+  document.getElementById("flashRemoteBtn").onclick = async () => {
+    if (!selectedRemoteAsset) {
+      alert("Select a remote firmware from the list first.");
+      return;
+    }
+    try {
+      await ensureConnectedForFlash();
+      appendLog("Downloading remote firmware: " + selectedRemoteAsset.name);
+      setStatus("Downloading remote firmware…", "connected");
+      const res = await fetch(selectedRemoteAsset.url);
+      if (!res.ok) throw new Error("Download failed: " + res.status);
+      const buf = await res.arrayBuffer();
+      appendLog("Download complete (" + buf.byteLength + " bytes).");
+      await writeMergedBin(buf, selectedRemoteAsset.name);
+      addHistoryEntry({
+        type: "remote",
+        name: selectedRemoteAsset.name,
+      });
+    } catch (e) {
+      appendLog("Remote flash error: " + e);
+      setStatus("Remote flash error", "error");
+    }
+  };
+
+  document.getElementById("copyOtaUrlBtn").onclick = async () => {
+    if (!selectedRemoteAsset) {
+      alert("Select a remote firmware first.");
+      return;
+    }
+    const url = selectedRemoteAsset.url;
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("OTA URL copied:\\n" + url);
+    } catch (_) {
+      alert("OTA URL:\\n" + url);
+    }
+  };
+
+  // ========= SERIAL CONSOLE =========
+  async function closeConsole() {
+    try {
+      if (consoleReader) {
+        await consoleReader.cancel();
+      }
+    } catch (_) {}
+    try {
+      if (consolePort && consolePort.readable) {
+        await consolePort.close();
+      }
+    } catch (_) {}
+    consolePort = null;
+    consoleReader = null;
+    consoleWriter = null;
+    appendConsole("[console] closed");
+  }
+
+  function appendConsole(msg) {
+    const time = new Date().toLocaleTimeString();
+    consoleLog.textContent += "[" + time + "] " + msg + "\\n";
+    consoleLog.scrollTop = consoleLog.scrollHeight;
+  }
+
+  document.getElementById("openConsoleBtn").onclick = async () => {
+    try {
+      if (!("serial" in navigator)) {
+        alert("WebSerial not supported. Use Chrome/Edge on desktop.");
+        return;
+      }
+      await closeConsole();
+
+      const baud = parseInt(baudSelect.value, 10) || 115200;
+      consolePort = await navigator.serial.requestPort();
+      await consolePort.open({ baudRate: baud });
+
+      appendConsole("[console] opened @ " + baud + " baud");
+
+      const decoder = new TextDecoderStream();
+      const encoder = new TextEncoderStream();
+
+      consolePort.readable.pipeTo(decoder.writable);
+      encoder.readable.pipeTo(consolePort.writable);
+
+      consoleReader = decoder.readable.getReader();
+      consoleWriter = encoder.writable.getWriter();
+
+      (async () => {
+        try {
+          while (true) {
+            const { value, done } = await consoleReader.read();
+            if (done) break;
+            if (value) {
+              consoleLog.textContent += value;
+              consoleLog.scrollTop = consoleLog.scrollHeight;
+            }
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      })();
+    } catch (e) {
+      console.error(e);
+      appendConsole("[console] error: " + e);
+    }
+  };
+
+  document.getElementById("closeConsoleBtn").onclick = async () => {
+    await closeConsole();
+  };
+
+  document.getElementById("consoleSendBtn").onclick = async () => {
+    if (!consoleWriter) {
+      alert("Open the console first.");
+      return;
+    }
+    const text = consoleInput.value;
+    if (!text) return;
+    try {
+      await consoleWriter.write(text + "\\n");
+      appendConsole("> " + text);
+      consoleInput.value = "";
+    } catch (e) {
+      appendConsole("[console] send error: " + e);
+    }
+  };
+
+  consoleInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("consoleSendBtn").click();
+    }
+  });
+
+  // ========= INIT =========
+  setConnectionUi(false);
+  setStatus("Idle");
+</script>
+
+</body>
+</html>
