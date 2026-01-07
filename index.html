@@ -858,8 +858,23 @@
           <button id="flashRemoteBtn" class="btn-small">
             ⚡ Flash Selected Remote
           </button>
+          <button id="openDownloadBtn" class="secondary btn-small">
+            Open Download
+          </button>
           <button id="copyOtaUrlBtn" class="secondary btn-small">
             Copy OTA URL
+          </button>
+        </div>
+
+        <div class="label" style="margin-top:10px;">Flash from URL (.bin)</div>
+        <div class="hint" style="margin-top:-4px;">
+          If GitHub Releases remote flash is blocked, use a CORS-friendly URL (e.g. raw file hosting) or download via "Open Download" then flash locally.
+        </div>
+        <div class="row" style="margin-top:6px;">
+          <input id="remoteUrlInput" type="text" class="mono" style="flex:1;"
+                 placeholder="https://.../firmware.bin" />
+          <button id="flashUrlBtn" class="btn-small">
+            Flash URL
           </button>
         </div>
 
@@ -942,12 +957,20 @@
   const historyList = document.getElementById("historyList");
   const remoteRefreshStatus = document.getElementById("remoteRefreshStatus");
   const remoteRefreshBadge = document.getElementById("remoteRefreshBadge");
+  const openDownloadBtn = document.getElementById("openDownloadBtn");
+  const remoteUrlInput = document.getElementById("remoteUrlInput");
+  const flashUrlBtn = document.getElementById("flashUrlBtn");
 
   const consoleLog = document.getElementById("consoleLog");
   const consoleInput = document.getElementById("consoleInput");
   const baudSelect = document.getElementById("baudSelect");
   const themeToggleBtn = document.getElementById("themeToggle");
   const themeToggleIcon = document.getElementById("themeToggleIcon");
+
+  const connectBtn = document.getElementById("connectBtn");
+  const disconnectBtn = document.getElementById("disconnectBtn");
+  const openConsoleBtn = document.getElementById("openConsoleBtn");
+  const closeConsoleBtn = document.getElementById("closeConsoleBtn");
 
   // State
   let devicePort = null;
@@ -972,6 +995,80 @@
   let consoleReader = null;
   let consoleWriter = null;
   const THEME_KEY = "cifertech_flasher_theme";
+  const CORS_PROXY_KEY = "cifertech_flasher_cors_proxy_enabled";
+  let corsProxyPrompted = false;
+  const corsProxyEnabled = (() => {
+    try {
+      return localStorage.getItem(CORS_PROXY_KEY) === "1";
+    } catch (_) {
+      return false;
+    }
+  })();
+
+  function formatError(err) {
+    try {
+      if (!err) return "Unknown error";
+      if (typeof err === "string") return err;
+      const name = err.name || err.constructor?.name || "Error";
+      const msg = err.message || String(err);
+      return name + (msg && msg !== name ? ": " + msg : "");
+    } catch (_) {
+      return "Unknown error";
+    }
+  }
+
+  function hintForError(err) {
+    const name = err?.name || "";
+    const msg = (err?.message || "").toLowerCase();
+
+    // Common WebSerial errors / user actions
+    if (name === "NotFoundError") return "No port selected (the chooser was closed).";
+    if (name === "NotAllowedError") return "Permission denied. Click the address-bar serial icon to manage permissions and try again.";
+    if (name === "SecurityError") return "WebSerial requires HTTPS or http://localhost (file:// won't work).";
+
+    // Port state / contention
+    if (name === "InvalidStateError") return "Port is already open. Close the serial console or any other app using the COM port and retry.";
+    if (name === "NetworkError" && msg.includes("failed to open"))
+      return "Failed to open the port. Another program may be using it (Arduino IDE, PuTTY, VS Code Serial Monitor). Close it and retry.";
+
+    // ESP bootloader sync issues commonly surface as generic errors
+    if (msg.includes("timed out") || msg.includes("timeout"))
+      return "Timeout talking to the bootloader. Try holding BOOT while clicking Connect, or press RESET when prompted by your board.";
+
+    return "";
+  }
+
+  function webSerialUsable() {
+    if (!("serial" in navigator)) {
+      return {
+        ok: false,
+        reason: "WebSerial not supported. Use Chrome/Edge on desktop.",
+      };
+    }
+    if (!window.isSecureContext) {
+      const origin = location.protocol === "file:" ? "file://" : location.origin;
+      return {
+        ok: false,
+        reason:
+          "WebSerial requires a secure context (HTTPS or http://localhost). Current origin: " +
+          origin +
+          ". If you opened this from disk, serve it via a local web server.",
+      };
+    }
+    return { ok: true, reason: "" };
+  }
+
+  function portInfoString(port) {
+    try {
+      const info = port?.getInfo?.() || {};
+      const vid = info.usbVendorId != null ? "0x" + info.usbVendorId.toString(16) : null;
+      const pid = info.usbProductId != null ? "0x" + info.usbProductId.toString(16) : null;
+      if (vid || pid) return " (VID " + (vid || "—") + ", PID " + (pid || "—") + ")";
+      return "";
+    } catch (_) {
+      return "";
+    }
+  }
 
   function appendLog(msg) {
     const time = new Date().toLocaleTimeString();
@@ -1014,6 +1111,125 @@
 
   function setProgress(p) {
     progressBar.style.width = p + "%";
+  }
+
+  async function fetchArrayBuffer(url, options = {}) {
+    const res = await fetch(url, options);
+    if (!res.ok) {
+      throw new Error("Download failed: " + res.status + (res.statusText ? " " + res.statusText : ""));
+    }
+    return await res.arrayBuffer();
+  }
+
+  function looksLikeCorsOrNetworkFetchFailure(err) {
+    const name = err?.name || "";
+    const msg = (err?.message || "").toLowerCase();
+    const s = String(err || "").toLowerCase();
+    // Browser fetch failures (often CORS blocked) surface as TypeError with "Failed to fetch"
+    if (name === "TypeError" && (msg.includes("failed to fetch") || s.includes("failed to fetch"))) return true;
+    if (s.includes("cors")) return true;
+    return false;
+  }
+
+  function buildCorsProxyUrls(targetUrl) {
+    const u = encodeURIComponent(targetUrl);
+    return [
+      // These are public third‑party proxies; use only if the user explicitly opts in.
+      "https://corsproxy.io/?" + u,
+      "https://api.allorigins.win/raw?url=" + u,
+      "https://cors.isomorphic-git.org/" + targetUrl,
+    ];
+  }
+
+  async function downloadRemoteFirmware(asset) {
+    // Try direct browser_download_url first (fast path)
+    try {
+      return await fetchArrayBuffer(asset.url, { cache: "no-store" });
+    } catch (e1) {
+      const msg1 = formatError(e1);
+      appendLog("Remote download (direct) failed: " + msg1);
+
+      // Retry via GitHub API asset URL (sometimes behaves differently with redirects)
+      if (asset.apiUrl) {
+        try {
+          return await fetchArrayBuffer(asset.apiUrl, {
+            cache: "no-store",
+            headers: {
+              Accept: "application/octet-stream",
+            },
+          });
+        } catch (e2) {
+          const msg2 = formatError(e2);
+          appendLog("Remote download (GitHub API) failed: " + msg2);
+        }
+      }
+
+      // If it looks like CORS, optionally try a proxy (opt-in + remembered).
+      const isCorsLike = looksLikeCorsOrNetworkFetchFailure(e1);
+      const isFileOrigin = location.protocol === "file:";
+      let allowProxy = corsProxyEnabled;
+
+      if (!allowProxy && isCorsLike && !corsProxyPrompted) {
+        corsProxyPrompted = true;
+        const ok = confirm(
+          "Your browser blocked downloading the GitHub release asset (likely CORS/redirect).\n\n" +
+            "Allow using a public CORS proxy to download the .bin for flashing?\n" +
+            "This sends the download URL through a third-party service. (Recommended only for trusted firmware.)"
+        );
+        if (ok) {
+          allowProxy = true;
+          try {
+            localStorage.setItem(CORS_PROXY_KEY, "1");
+          } catch (_) {}
+          appendLog("CORS proxy enabled for remote downloads.");
+        }
+      }
+
+      if (allowProxy && isCorsLike) {
+        const candidates = buildCorsProxyUrls(asset.url);
+        for (const proxyUrl of candidates) {
+          try {
+            appendLog("Trying CORS proxy…");
+            return await fetchArrayBuffer(proxyUrl, { cache: "no-store" });
+          } catch (e3) {
+            appendLog("CORS proxy failed: " + formatError(e3));
+          }
+        }
+      }
+
+      if (isCorsLike) {
+        appendLog(
+          "Hint: Your browser blocked the GitHub release download (CORS/redirect). " +
+            (isFileOrigin
+              ? "If you're running from file://, serve this page from http://localhost or GitHub Pages. "
+              : "") +
+            "Use 'Copy OTA URL' to download the .bin manually, then flash it via Local Firmware."
+        );
+      }
+      throw e1;
+    }
+  }
+
+  async function safeClosePort(port) {
+    try {
+      if (port && port.readable) {
+        await port.close();
+      }
+    } catch (_) {}
+  }
+
+  async function cleanupDeviceConnection({ statusTextOverride } = {}) {
+    try {
+      if (transport) await transport.disconnect();
+    } catch (_) {}
+    await safeClosePort(devicePort);
+
+    devicePort = null;
+    transport = null;
+    esploader = null;
+
+    setConnectionUi(false);
+    setStatus(statusTextOverride || "Disconnected");
   }
 
   function addHistoryEntry(entry) {
@@ -1165,6 +1381,8 @@
               releaseTag: rel.tag_name,
               name: asset.name,
               url: asset.browser_download_url,
+              apiUrl: asset.url,
+              id: asset.id,
             });
           }
         });
@@ -1270,16 +1488,32 @@
   });
 
   // ========= CONNECTION & INFO =========
-  document.getElementById("connectBtn").onclick = async () => {
+  connectBtn.onclick = async () => {
+    let port = null;
     try {
-      if (!("serial" in navigator)) {
-        alert("WebSerial not supported. Use Chrome/Edge on desktop.");
+      const usable = webSerialUsable();
+      if (!usable.ok) {
+        alert(usable.reason);
+        setStatus("WebSerial unavailable", "error");
+        appendLog(usable.reason);
         return;
       }
 
+      // Avoid "port already open" by closing the console first.
+      if (consolePort) {
+        appendLog("Closing serial console to free the port…");
+        await closeConsole();
+      }
+
+      // If already connected, clean up first to avoid invalid state.
+      if (devicePort || transport || esploader) {
+        appendLog("Cleaning up previous connection…");
+        await cleanupDeviceConnection({ statusTextOverride: "Reconnecting…" });
+      }
+
       setStatus("Requesting port…");
-      const port = await navigator.serial.requestPort();
-      await port.open({ baudRate: 115200 });
+      port = await navigator.serial.requestPort();
+      appendLog("Port selected" + portInfoString(port));
 
       devicePort = port;
       transport = new Transport(port);
@@ -1331,11 +1565,14 @@
 
     } catch (err) {
       console.error(err);
-      appendLog("Error while connecting: " + err);
+      const msg = formatError(err);
+      const hint = hintForError(err);
+      appendLog("Error while connecting: " + msg);
+      if (hint) appendLog("Hint: " + hint);
       setStatus("Connect failed", "error");
       setConnectionUi(false);
       try {
-        if (devicePort) await devicePort.close();
+        await safeClosePort(devicePort || port);
       } catch (_) {}
       devicePort = null;
       transport = null;
@@ -1343,7 +1580,7 @@
     }
   };
 
-  document.getElementById("disconnectBtn").onclick = async () => {
+  disconnectBtn.onclick = async () => {
     try {
       if (transport) {
         await transport.disconnect();
@@ -1482,81 +1719,6 @@
   };
 
   // ========= GITHUB RELEASES / OTA =========
-  document.getElementById("loadReleasesBtn").onclick = async () => {
-    const repo = repoInput.value.trim();
-    if (!repo || !repo.includes("/")) {
-      alert("Repo format should be owner/repo, e.g. cifertech/RF-Clown");
-      return;
-    }
-
-    githubList.innerHTML = "";
-    selectedRemoteAsset = null;
-    selectedRemoteEl.textContent = "—";
-
-    try {
-      const url = "https://api.github.com/repos/" + repo + "/releases";
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("GitHub API: " + res.status);
-      const releases = await res.json();
-
-      githubAssets = [];
-      releases.forEach((rel) => {
-        (rel.assets || []).forEach((asset) => {
-          if (asset.name && asset.name.endsWith(".bin")) {
-            githubAssets.push({
-              releaseTag: rel.tag_name,
-              name: asset.name,
-              url: asset.browser_download_url,
-            });
-          }
-        });
-      });
-
-      if (!githubAssets.length) {
-        const li = document.createElement("li");
-        li.className = "github-item";
-        li.innerHTML = "<span>No .bin assets found.</span>";
-        githubList.appendChild(li);
-        return;
-      }
-
-      githubAssets.forEach((a, idx) => {
-        const li = document.createElement("li");
-        li.className = "github-item";
-
-        const left = document.createElement("span");
-        left.textContent = a.name;
-        const right = document.createElement("span");
-        right.className = "label-chip";
-        right.textContent = a.releaseTag || "release";
-
-        li.appendChild(left);
-        li.appendChild(right);
-
-        li.onclick = () => {
-          selectedRemoteAsset = a;
-          selectedRemoteEl.textContent =
-            a.name + " (" + (a.releaseTag || "release") + ")";
-          Array.from(githubList.children).forEach((item) => {
-            item.style.borderColor = "rgba(15,23,42,1)";
-          });
-          li.style.borderColor = "rgba(56,189,248,0.8)";
-        };
-
-        githubList.appendChild(li);
-        if (idx === 0) {
-          li.click();
-        }
-      });
-    } catch (e) {
-      console.error(e);
-      const li = document.createElement("li");
-      li.className = "github-item";
-      li.innerHTML = "<span>Error loading releases.</span>";
-      githubList.appendChild(li);
-    }
-  };
-
   document.getElementById("flashRemoteBtn").onclick = async () => {
     if (!selectedRemoteAsset) {
       alert("Select a remote firmware from the list first.");
@@ -1566,9 +1728,7 @@
       await ensureConnectedForFlash();
       appendLog("Downloading remote firmware: " + selectedRemoteAsset.name);
       setStatus("Downloading remote firmware…", "connected");
-      const res = await fetch(selectedRemoteAsset.url);
-      if (!res.ok) throw new Error("Download failed: " + res.status);
-      const buf = await res.arrayBuffer();
+      const buf = await downloadRemoteFirmware(selectedRemoteAsset);
       appendLog("Download complete (" + buf.byteLength + " bytes).");
       await writeMergedBin(buf, selectedRemoteAsset.name);
       addHistoryEntry({
@@ -1576,10 +1736,61 @@
         name: selectedRemoteAsset.name,
       });
     } catch (e) {
-      appendLog("Remote flash error: " + e);
+      const msg = formatError(e);
+      const hint = hintForError(e);
+      appendLog("Remote flash error: " + msg);
+      if (hint) appendLog("Hint: " + hint);
       setStatus("Remote flash error", "error");
     }
   };
+
+  if (openDownloadBtn) {
+    openDownloadBtn.onclick = async () => {
+      if (!selectedRemoteAsset) {
+        alert("Select a remote firmware first.");
+        return;
+      }
+      const url = selectedRemoteAsset.url;
+      appendLog("Opening download in a new tab: " + selectedRemoteAsset.name);
+      // This uses normal browser navigation/download and avoids CORS fetch restrictions.
+      const w = window.open(url, "_blank", "noopener,noreferrer");
+      if (!w) {
+        alert("Popup blocked. Allow popups for this site, or use 'Copy OTA URL'.");
+      }
+    };
+  }
+
+  if (flashUrlBtn) {
+    flashUrlBtn.onclick = async () => {
+      const url = (remoteUrlInput?.value || "").trim();
+      if (!url) {
+        alert("Paste a direct .bin URL first.");
+        return;
+      }
+      if (!/^https?:\/\//i.test(url)) {
+        alert("URL must start with http:// or https://");
+        return;
+      }
+      try {
+        await ensureConnectedForFlash();
+        appendLog("Downloading firmware from URL…");
+        setStatus("Downloading URL firmware…", "connected");
+        const buf = await fetchArrayBuffer(url, { cache: "no-store" });
+        appendLog("Download complete (" + buf.byteLength + " bytes).");
+        await writeMergedBin(buf, url.split("/").pop() || "url.bin");
+        addHistoryEntry({ type: "url", name: url });
+      } catch (e) {
+        const msg = formatError(e);
+        appendLog("URL flash error: " + msg);
+        if (looksLikeCorsOrNetworkFetchFailure(e)) {
+          appendLog(
+            "Hint: That host may not allow browser downloads (CORS). Try a CORS-friendly host (or download in a tab and flash locally)."
+          );
+        }
+        setStatus("URL flash error", "error");
+      }
+    };
+  }
 
   document.getElementById("copyOtaUrlBtn").onclick = async () => {
     if (!selectedRemoteAsset) {
@@ -1621,14 +1832,23 @@
 
   document.getElementById("openConsoleBtn").onclick = async () => {
     try {
-      if (!("serial" in navigator)) {
-        alert("WebSerial not supported. Use Chrome/Edge on desktop.");
+      const usable = webSerialUsable();
+      if (!usable.ok) {
+        alert(usable.reason);
+        appendConsole("[console] " + usable.reason);
         return;
+      }
+
+      // The port can't be opened twice; close flasher connection first if needed.
+      if (devicePort) {
+        appendConsole("[console] closing flasher connection to free the port…");
+        await cleanupDeviceConnection({ statusTextOverride: "Idle" });
       }
       await closeConsole();
 
       const baud = parseInt(baudSelect.value, 10) || 115200;
       consolePort = await navigator.serial.requestPort();
+      appendConsole("[console] port selected" + portInfoString(consolePort));
       await consolePort.open({ baudRate: baud });
 
       appendConsole("[console] opened @ " + baud + " baud");
@@ -1658,11 +1878,14 @@
       })();
     } catch (e) {
       console.error(e);
-      appendConsole("[console] error: " + e);
+      const msg = formatError(e);
+      const hint = hintForError(e);
+      appendConsole("[console] error: " + msg);
+      if (hint) appendConsole("[console] hint: " + hint);
     }
   };
 
-  document.getElementById("closeConsoleBtn").onclick = async () => {
+  closeConsoleBtn.onclick = async () => {
     await closeConsole();
   };
 
@@ -1692,6 +1915,30 @@
   // ========= INIT =========
   setConnectionUi(false);
   setStatus("Idle");
+
+  // Update UI immediately if WebSerial can't work in this context.
+  const usable = webSerialUsable();
+  if (!usable.ok) {
+    setStatus("WebSerial unavailable", "error");
+    appendLog(usable.reason);
+    if (connectBtn) connectBtn.disabled = true;
+    if (openConsoleBtn) openConsoleBtn.disabled = true;
+  }
+
+  // Handle unplug / OS disconnect events.
+  if ("serial" in navigator) {
+    navigator.serial.addEventListener("disconnect", async (event) => {
+      const disconnectedPort = event?.target || event?.port || null;
+      if (disconnectedPort && devicePort && disconnectedPort === devicePort) {
+        appendLog("Device disconnected.");
+        await cleanupDeviceConnection({ statusTextOverride: "Disconnected" });
+      }
+      if (disconnectedPort && consolePort && disconnectedPort === consolePort) {
+        appendConsole("[console] device disconnected");
+        await closeConsole();
+      }
+    });
+  }
 </script>
 
 </body>
