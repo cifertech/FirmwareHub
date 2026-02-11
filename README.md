@@ -3,7 +3,6 @@
 <!-- Badges -->
 
 <a href="https://github.com/cifertech/FirmwareHub" title="Go to GitHub repo"><img src="https://img.shields.io/static/v1?label=cifertech&message=FirmwareHub&color=cyan&logo=github" alt="cifertech - DisplayKit"></a>
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/cifertech/FirmwareHub/total)
 <a href="https://github.com/cifertech/DisplayKit"><img src="https://img.shields.io/github/stars/cifertech/FirmwareHub?style=social" alt="stars - FirmwareHub"></a>
 <a href="https://github.com/cifertech/DisplayKit"><img src="https://img.shields.io/github/forks/cifertech/FirmwareHub?style=social" alt="forks - FirmwareHub"></a>
    
@@ -60,7 +59,7 @@ For remote updates, it reads `.bin` files from **GitHub Releases** of your repos
 
 ## 🤝 Contribute
 
-Want to help make DisplayKit better?
+Want to help make FirmwareHub better?
 
 - Submit bug reports  
 - Suggest new features  
