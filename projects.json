@@ -1,0 +1,29 @@
+[
+  {
+    "id": "esp32-div",
+    "name": "ESP32-DIV",
+    "repo": "cifertech/ESP32-DIV",
+    "chipFamily": "ESP32",
+    "description": "Multi-tool ESP32 device with RF + WiFi features.",
+    "tags": ["esp32", "rf", "wifi"],
+    "assetFilter": ".bin"
+  },
+  {
+    "id": "nrfbox",
+    "name": "nRFBox",
+    "repo": "cifertech/nRFBox",
+    "chipFamily": "ESP32",
+    "description": "Wireless toolbox with NRF + ESP32 firmware.",
+    "tags": ["esp32", "nrf", "wireless"],
+    "assetFilter": ".bin"
+  },
+  {
+    "id": "rf-clown",
+    "name": "RF-Clown",
+    "repo": "cifertech/RF-Clown",
+    "chipFamily": "ESP32",
+    "description": "RF experimentation device for CiferTech.",
+    "tags": ["esp32", "rf"],
+    "assetFilter": ".bin"
+  }
+]
