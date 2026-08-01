@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>FirmwareHub · CiferTech</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/png" href="file:///C:/Users/CiferTech/.cursor/projects/d-Projects-Github-FirmwareHub/assets/c__Users_CiferTech_AppData_Roaming_Cursor_User_workspaceStorage_e1541f254c985e81cc5a28ba5bdeb92e_images_X_LOGO-6c3a9a16-a000-4871-aa19-e98780e7e25d.png" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
   <style>
     :root {
@@ -1568,7 +1568,86 @@
     ::-webkit-scrollbar-thumb:hover {
       background: var(--accent);
     }
+
+    /* esp-web-install styles */
+    .board-picker {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .board-pick {
+      text-align: left;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .board-pick:hover {
+      border-color: var(--accent-border-soft);
+    }
+    .board-pick.is-active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .board-pick__name {
+      display: block;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .board-pick__chip {
+      display: block;
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+    .install-file-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .install-file-row .mono {
+      font-size: 12px;
+    }
+    .install-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    esp-web-install-button {
+      display: inline-block;
+    }
+    esp-web-install-button button,
+    .ewt-install-btn {
+      appearance: none;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: var(--accent-contrast);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    esp-web-install-button button:hover,
+    .ewt-install-btn:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+    @media (max-width: 720px) {
+      .board-picker { grid-template-columns: 1fr; }
+    }
   </style>
+
+  <!-- ESP Web Tools — same stack as the working ESP32-DIV docs flasher -->
+  <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 </head>
 
 <body data-theme="dark">
@@ -1718,6 +1797,7 @@
             <div class="panel-body">
               <div class="panel-block">
                 <div class="block-title">File</div>
+                <div class="hint" style="margin-bottom:8px;">Drop any .bin, then Install with esp-web-tools (same engine as docs).</div>
                 <div id="dropzone" class="dropzone">
                   <div>Drop a <span>.bin</span> here or click to browse</div>
                   <div id="filename" class="filename">No file selected</div>
@@ -1771,11 +1851,18 @@
                 </div>
               </div>
               <div class="panel-block">
-                <div class="block-title">Actions</div>
-                <div class="row">
-                  <button id="flashLocalBtn">🚀 Flash Local Firmware</button>
+                <div class="block-title">Install</div>
+                <div class="hint" style="margin-bottom:8px;">Uses esp-web-tools with a blob manifest (docs install method). No Connect step needed.</div>
+                <div class="install-actions">
+                  <esp-web-install-button class="hub-install" id="install-btn-local" manifest="manifest.json">
+                    <button slot="activate" class="ewt-install-btn">⚡ Install firmware</button>
+                    <span slot="unsupported">Use Chrome or Edge on desktop.</span>
+                    <span slot="not-allowed">Needs HTTPS or http://localhost.</span>
+                  </esp-web-install-button>
+                  <button id="flashLocalBtn" class="secondary btn-small" title="Legacy esptool-js (requires Connect)">Legacy flash</button>
                   <button id="eraseBtn" class="secondary btn-small">Erase Flash (Full)</button>
                 </div>
+                <p class="hint" id="browser-warn" style="margin-top:10px; display:none;">Web Serial requires Chrome or Edge on desktop.</p>
               </div>
               <div class="panel-block">
                 <div class="block-title">Multi-file flash</div>
@@ -1844,18 +1931,30 @@
                 <ul id="githubList" class="github-list"></ul>
               </div>
               <div class="panel-block">
-                <div class="block-title">Flash</div>
+                <div class="block-title">Download &amp; Install</div>
                 <div class="label">Selected</div>
                 <div class="value-soft mono" id="selectedRemote" style="margin-bottom:8px;">—</div>
+                <div class="hint" style="margin-bottom:8px;">
+                  Docs installs from same-origin files. GitHub release URLs block browser fetch (CORS), so:
+                  <strong>Prepare</strong> downloads via the browser then loads the file as a local blob; <strong>Install</strong> uses esp-web-tools like docs.
+                </div>
+                <div class="install-actions" style="margin-bottom:10px;">
+                  <button id="flashRemoteBtn" class="btn-small">Download / Prepare</button>
+                  <esp-web-install-button class="hub-install" id="install-btn-remote" manifest="manifest.json">
+                    <button slot="activate" class="ewt-install-btn">⚡ Install firmware</button>
+                    <span slot="unsupported">Use Chrome or Edge on desktop.</span>
+                    <span slot="not-allowed">Needs HTTPS or http://localhost.</span>
+                  </esp-web-install-button>
+                  <a class="secondary btn-small" id="remote-dl-btn" href="#" target="_blank" rel="noopener">Open download</a>
+                </div>
                 <div class="row" style="flex-wrap:wrap; gap:8px;">
-                  <button id="flashRemoteBtn" class="btn-small">⚡ Flash selected</button>
-                  <button id="flashFullSetBtn" class="btn-small" title="Flash all .bin files in this release at standard addresses">📦 Flash full set</button>
-                  <button id="openDownloadBtn" class="secondary btn-small">Open download</button>
+                  <button id="flashFullSetBtn" class="secondary btn-small" title="Legacy multi-file flash (requires Connect)">📦 Flash full set (legacy)</button>
+                  <button id="openDownloadBtn" class="secondary btn-small" style="display:none;">Open download</button>
                   <button id="copyOtaUrlBtn" class="secondary btn-small">Copy OTA URL</button>
                   <button id="viewChangelogBtn" class="secondary btn-small">📋 Changelog</button>
                 </div>
                 <div id="releaseSetPreview" class="release-set-preview"></div>
-                <div class="hint" style="margin-top:6px;">Full set: bootloader→0x1000, partition→0x8000, app→0x10000.</div>
+                <div class="hint" style="margin-top:6px;">Prefer a single <em>merged</em> image at offset 0x0 (like ESP32-DIV docs).</div>
               </div>
               <div class="panel-block">
                 <div class="block-title">Flash from URL</div>
@@ -1966,7 +2065,8 @@
 
 <!-- SCRIPT -->
 <script type="module">
-  import { ESPLoader, Transport } from "https://cdn.jsdelivr.net/npm/esptool-js@0.4.5/bundle.js";
+  // Match esp-web-tools@10 (used by the working ESP32-DIV docs flasher)
+  import { ESPLoader, Transport } from "https://cdn.jsdelivr.net/npm/esptool-js@0.6.0/bundle.js";
 
   // Elements
   const connDot   = document.getElementById("connDot");
@@ -2077,15 +2177,6 @@
   let consoleReader = null;
   let consoleWriter = null;
   const THEME_KEY = "cifertech_flasher_theme";
-  const CORS_PROXY_KEY = "cifertech_flasher_cors_proxy_enabled";
-  let corsProxyPrompted = false;
-  const corsProxyEnabled = (() => {
-    try {
-      return localStorage.getItem(CORS_PROXY_KEY) === "1";
-    } catch (_) {
-      return false;
-    }
-  })();
 
   function formatError(err) {
     try {
@@ -2200,6 +2291,99 @@
     }
   }
 
+
+  // ===== ESP-WEB-TOOLS (docs install method) =====
+  // Build a JSON manifest blob → set on <esp-web-install-button manifest="...">
+  let manifestBlobUrl = null;
+  let firmwareBlobUrl = null;
+
+  function revokeInstallUrls() {
+    if (manifestBlobUrl) {
+      URL.revokeObjectURL(manifestBlobUrl);
+      manifestBlobUrl = null;
+    }
+    if (firmwareBlobUrl) {
+      URL.revokeObjectURL(firmwareBlobUrl);
+      firmwareBlobUrl = null;
+    }
+  }
+
+  function setInstallManifestFromParts({ name, version, chipFamily, firmwarePathOrUrl, offset }) {
+    if (manifestBlobUrl) {
+      URL.revokeObjectURL(manifestBlobUrl);
+      manifestBlobUrl = null;
+    }
+    const manifest = {
+      name: name || "Firmware",
+      version: String(version || "1.0.0"),
+      new_install_prompt_erase: true,
+      builds: [
+        {
+          chipFamily: chipFamily || "ESP32",
+          parts: [{ path: firmwarePathOrUrl, offset: offset != null ? offset : 0 }],
+        },
+      ],
+    };
+    manifestBlobUrl = URL.createObjectURL(
+      new Blob([JSON.stringify(manifest)], { type: "application/json" })
+    );
+    document.querySelectorAll("esp-web-install-button.hub-install").forEach((btn) => {
+      btn.setAttribute("manifest", manifestBlobUrl);
+      btn.style.display = "";
+    });
+    appendLog(
+      "Install ready: " +
+        (name || firmwarePathOrUrl) +
+        " @ 0x" +
+        (offset || 0).toString(16) +
+        " (" +
+        (chipFamily || "ESP32") +
+        ")"
+    );
+  }
+
+  function setInstallFromBuffer(buffer, label, chipFamily, offset) {
+    revokeInstallUrls();
+    const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+    firmwareBlobUrl = URL.createObjectURL(
+      new Blob([bytes], { type: "application/octet-stream" })
+    );
+    setInstallManifestFromParts({
+      name: label || "Custom firmware",
+      version: "1.0.0",
+      chipFamily: chipFamily || detectChipFamilyForInstall(),
+      firmwarePathOrUrl: firmwareBlobUrl,
+      offset: offset != null ? offset : 0,
+    });
+    if (filenameEl) filenameEl.textContent = label || "custom.bin";
+  }
+
+  function detectChipFamilyForInstall() {
+    const chip = (chipFamilyBadge?.textContent || "").trim();
+    if (chip && chip !== "No chip") {
+      if (/s3/i.test(chip)) return "ESP32-S3";
+      if (/s2/i.test(chip)) return "ESP32-S2";
+      if (/c3/i.test(chip)) return "ESP32-C3";
+      if (/c6/i.test(chip)) return "ESP32-C6";
+      if (/h2/i.test(chip)) return "ESP32-H2";
+      if (/8266/i.test(chip)) return "ESP8266";
+      if (/esp32/i.test(chip)) return "ESP32";
+    }
+    const project = projectCatalog.find((p) => p.repo === (repoInput?.value || "").trim());
+    if (project?.chipFamily) return project.chipFamily;
+    return "ESP32";
+  }
+
+  function updateInstallVisibility() {
+    const serialOk = "serial" in navigator;
+    document.querySelectorAll("esp-web-install-button.hub-install").forEach((btn) => {
+      btn.style.display = serialOk ? "" : "none";
+    });
+    const warn = document.getElementById("browser-warn");
+    if (warn) warn.style.display = serialOk ? "none" : "block";
+  }
+  updateInstallVisibility();
+
   function setProgress(p) {
     progressBar.style.width = p + "%";
   }
@@ -2209,96 +2393,134 @@
     if (!res.ok) {
       throw new Error("Download failed: " + res.status + (res.statusText ? " " + res.statusText : ""));
     }
-    return await res.arrayBuffer();
+    const buf = await res.arrayBuffer();
+    // Proxies sometimes return HTML error pages with HTTP 200
+    if (buf.byteLength < 256) {
+      const head = new TextDecoder().decode(new Uint8Array(buf).slice(0, 64)).trim().toLowerCase();
+      if (head.startsWith("<!doctype") || head.startsWith("<html") || head.startsWith("{")) {
+        throw new Error("Download did not return a firmware binary (" + buf.byteLength + " bytes)");
+      }
+    }
+    return buf;
   }
 
   function looksLikeCorsOrNetworkFetchFailure(err) {
     const name = err?.name || "";
     const msg = (err?.message || "").toLowerCase();
     const s = String(err || "").toLowerCase();
-    // Browser fetch failures (often CORS blocked) surface as TypeError with "Failed to fetch"
     if (name === "TypeError" && (msg.includes("failed to fetch") || s.includes("failed to fetch"))) return true;
     if (s.includes("cors")) return true;
+    if (msg.includes("download failed: 403") || msg.includes("download failed: 429")) return true;
     return false;
   }
 
-  function buildCorsProxyUrls(targetUrl) {
-    const u = encodeURIComponent(targetUrl);
-    return [
-      // These are public third‑party proxies; use only if the user explicitly opts in.
-      "https://corsproxy.io/?" + u,
-      "https://api.allorigins.win/raw?url=" + u,
-      "https://cors.isomorphic-git.org/" + targetUrl,
-    ];
+  /** Open GitHub download in the browser, then ask the user to pick the saved .bin. */
+  async function downloadViaManualPick(asset) {
+    const name = asset?.name || "firmware.bin";
+    const url = asset?.url;
+    if (!url) throw new Error("Missing download URL");
+
+    const ok = confirm(
+      "GitHub blocks automatic .bin downloads in the browser (CORS).\n\n" +
+        "1) Click OK to open the download for:\n   " +
+        name +
+        "\n\n2) After it saves, choose that file in the next dialog to continue flashing."
+    );
+    if (!ok) throw new Error("Remote download cancelled");
+
+    appendLog("Opening browser download for " + name + "…");
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    // Give the browser a moment to start the download before the picker.
+    await new Promise((r) => setTimeout(r, 500));
+    appendLog("Select the downloaded .bin to continue flashing…");
+
+    if (typeof window.showOpenFilePicker === "function") {
+      try {
+        const [handle] = await window.showOpenFilePicker({
+          multiple: false,
+          excludeAcceptAllOption: false,
+          types: [
+            {
+              description: "Firmware binary",
+              accept: { "application/octet-stream": [".bin"] },
+            },
+          ],
+        });
+        const file = await handle.getFile();
+        appendLog("Using local file: " + file.name + " (" + file.size + " bytes)");
+        return await file.arrayBuffer();
+      } catch (e) {
+        if (e && (e.name === "AbortError" || /abort/i.test(String(e.message || e)))) {
+          throw new Error("File selection cancelled");
+        }
+        throw e;
+      }
+    }
+
+    // Fallback for browsers without showOpenFilePicker
+    return await new Promise((resolve, reject) => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".bin,application/octet-stream";
+      input.style.display = "none";
+      document.body.appendChild(input);
+      input.addEventListener("change", async () => {
+        try {
+          const file = input.files && input.files[0];
+          input.remove();
+          if (!file) {
+            reject(new Error("No file selected"));
+            return;
+          }
+          appendLog("Using local file: " + file.name + " (" + file.size + " bytes)");
+          resolve(await file.arrayBuffer());
+        } catch (e) {
+          input.remove();
+          reject(e);
+        }
+      });
+      input.click();
+    });
   }
 
   async function downloadRemoteFirmware(asset) {
-    // Try direct browser_download_url first (fast path)
+    // GitHub release CDN has no CORS headers, so browser fetch almost always fails.
+    // Try direct/API quickly, then fall back to browser download + local file pick.
+
     try {
       return await fetchArrayBuffer(asset.url, { cache: "no-store" });
     } catch (e1) {
-      const msg1 = formatError(e1);
-      appendLog("Remote download (direct) failed: " + msg1);
-
-      // Retry via GitHub API asset URL (sometimes behaves differently with redirects)
-      if (asset.apiUrl) {
-        try {
-          return await fetchArrayBuffer(asset.apiUrl, {
-            cache: "no-store",
-            headers: {
-              Accept: "application/octet-stream",
-            },
-          });
-        } catch (e2) {
-          const msg2 = formatError(e2);
-          appendLog("Remote download (GitHub API) failed: " + msg2);
-        }
-      }
-
-      // If it looks like CORS, optionally try a proxy (opt-in + remembered).
-      const isCorsLike = looksLikeCorsOrNetworkFetchFailure(e1);
-      const isFileOrigin = location.protocol === "file:";
-      let allowProxy = corsProxyEnabled;
-
-      if (!allowProxy && isCorsLike && !corsProxyPrompted) {
-        corsProxyPrompted = true;
-        const ok = confirm(
-          "Your browser blocked downloading the GitHub release asset (likely CORS/redirect).\n\n" +
-            "Allow using a public CORS proxy to download the .bin for flashing?\n" +
-            "This sends the download URL through a third-party service. (Recommended only for trusted firmware.)"
-        );
-        if (ok) {
-          allowProxy = true;
-          try {
-            localStorage.setItem(CORS_PROXY_KEY, "1");
-          } catch (_) {}
-          appendLog("CORS proxy enabled for remote downloads.");
-        }
-      }
-
-      if (allowProxy && isCorsLike) {
-        const candidates = buildCorsProxyUrls(asset.url);
-        for (const proxyUrl of candidates) {
-          try {
-            appendLog("Trying CORS proxy…");
-            return await fetchArrayBuffer(proxyUrl, { cache: "no-store" });
-          } catch (e3) {
-            appendLog("CORS proxy failed: " + formatError(e3));
-          }
-        }
-      }
-
-      if (isCorsLike) {
-        appendLog(
-          "Hint: Your browser blocked the GitHub release download (CORS/redirect). " +
-            (isFileOrigin
-              ? "If you're running from file://, serve this page from http://localhost or GitHub Pages. "
-              : "") +
-            "Use 'Copy OTA URL' to download the .bin manually, then flash it via Local Firmware."
-        );
-      }
-      throw e1;
+      appendLog("Remote download (direct) failed: " + formatError(e1));
     }
+
+    if (asset.apiUrl) {
+      try {
+        return await fetchArrayBuffer(asset.apiUrl, {
+          cache: "no-store",
+          headers: { Accept: "application/octet-stream" },
+        });
+      } catch (e2) {
+        appendLog("Remote download (GitHub API) failed: " + formatError(e2));
+      }
+    }
+
+    if (location.protocol === "file:") {
+      appendLog(
+        "Hint: file:// cannot download GitHub releases. Run start-server.bat and open http://localhost:5500"
+      );
+    }
+
+    // Public CORS proxies usually fail/403 on GitHub release CDN — skip straight to manual pick.
+    appendLog("Using browser download + file pick (GitHub CORS workaround)…");
+    return await downloadViaManualPick(asset);
   }
 
   async function safeClosePort(port) {
@@ -2646,11 +2868,23 @@
   }
 
   function selectRemoteAsset(asset, listItem) {
+    const remoteDl = document.getElementById("remote-dl-btn");
     if (asset) {
       selectedRemoteEl.textContent =
         asset.name + " (" + (asset.releaseTag || "release") + ")";
+      if (flashAddressInput) {
+        flashAddressInput.value = "0x" + suggestAddressForAsset(asset.name).toString(16);
+      }
+      if (remoteDl && asset.url) {
+        remoteDl.href = asset.url;
+        remoteDl.style.display = "";
+      }
     } else {
       selectedRemoteEl.textContent = "—";
+      if (remoteDl) {
+        remoteDl.href = "#";
+        remoteDl.style.display = "none";
+      }
     }
     selectedRemoteAsset = asset || null;
     if (asset && asset.releaseTag) {
@@ -2661,10 +2895,29 @@
     updateRemoteActionsUi();
   }
 
-  /** Suggest flash address from filename (bootloader, partition, app). */
+  /** Bootloader offset: classic ESP32 @ 0x1000, newer chips (S2/S3/C3/…) @ 0x0. */
+  function getBootloaderOffset() {
+    const chip = (chipFamilyBadge?.textContent || chipNameEl?.textContent || "").toLowerCase();
+    if (
+      chip.includes("esp32-s") ||
+      chip.includes("esp32s") ||
+      chip.includes("esp32-c") ||
+      chip.includes("esp32c") ||
+      chip.includes("esp32-h") ||
+      chip.includes("esp32h") ||
+      chip.includes("esp32-p") ||
+      chip.includes("esp32p")
+    ) {
+      return 0x0;
+    }
+    return 0x1000;
+  }
+
+  /** Suggest flash address from filename (merged → 0x0, like the docs flasher). */
   function suggestAddressForAsset(name) {
     const n = (name || "").toLowerCase();
-    if (n.includes("bootloader")) return 0x1000;
+    if (n.includes("merged") || n.includes("factory") || n.includes("complete")) return 0x0;
+    if (n.includes("bootloader")) return getBootloaderOffset();
     if (n.includes("partition")) return 0x8000;
     return 0x10000;
   }
@@ -3059,6 +3312,7 @@
       if (id === "connect" || id === "local" || id === "remote") moveFlasherLogTo(id);
     });
   });
+  moveFlasherLogTo("connect");
 
   async function loadGitHubReleases({ silent = false, trigger = "manual" } = {}) {
     const repo = repoInput.value.trim();
@@ -3299,16 +3553,16 @@
       }
 
       try {
-        await esploader.detectFlashSize();
-        const sizeBytes = await esploader.flashSizeBytes();
-        const sizeMb = (sizeBytes / (1024 * 1024)).toFixed(1);
-        flashSizeEl.textContent = sizeMb + " MB";
+        // esptool-js@0.6 (same as esp-web-tools@10) returns e.g. "4MB"
+        const flashSizeStr = await esploader.detectFlashSize();
+        flashSizeEl.textContent = flashSizeStr || "detect";
       } catch (e) {
         flashSizeEl.textContent = "detect";
       }
 
       try {
-        const mac = await esploader.chip.get_efuse_mac(esploader);
+        const macFn = esploader.chip.readMac || esploader.chip.get_efuse_mac;
+        const mac = macFn ? await macFn.call(esploader.chip, esploader) : null;
         macAddrEl.textContent = mac || "—";
       } catch (e) {
         macAddrEl.textContent = "—";
@@ -3383,6 +3637,15 @@
     filenameEl.textContent = firmwareName;
     firmwareBuffer = await file.arrayBuffer();
     appendLog("Loaded local firmware: " + firmwareName + " (" + file.size + " bytes)");
+    try {
+      setInstallFromBuffer(
+        firmwareBuffer,
+        firmwareName,
+        detectChipFamilyForInstall(),
+        parseHexOrDec(flashAddressInput?.value || "0")
+      );
+      appendLog("Ready — click Install firmware (esp-web-tools), same as docs.");
+    } catch (_) {}
   }
 
   // ========= FLASH HELPERS =========
@@ -3404,15 +3667,10 @@
     setProgress(2);
     appendLog("Starting flash… (address 0x" + address.toString(16) + ")");
 
-    const uint8 = new Uint8Array(buffer);
-    let binStr = "";
-    for (let i = 0; i < uint8.length; i++) {
-      binStr += String.fromCharCode(uint8[i]);
-    }
-
+    // esptool-js@0.6 requires Uint8Array (binary-string loop freezes/corrupts large .bins)
     const fileArray = [
       {
-        data: binStr,
+        data: new Uint8Array(buffer),
         address: address,
       },
     ];
@@ -3458,12 +3716,19 @@
       alert("Select a .bin firmware first.");
       return;
     }
+    // Legacy path kept for advanced users who already Connected
     try {
       await writeMergedBin(firmwareBuffer, firmwareName);
-    } catch (_) {}
+    } catch (e) {
+      appendLog("Legacy flash failed: " + formatError(e) + " — use Install firmware (esp-web-tools) instead.");
+    }
   };
 
-  const MULTI_FILE_DEFAULTS = ["0x1000", "0x8000", "0x10000"];
+  const MULTI_FILE_DEFAULTS = () => [
+    "0x" + getBootloaderOffset().toString(16),
+    "0x8000",
+    "0x10000",
+  ];
 
   function addMultiFileRow(defaultAddress) {
     if (!multiFileContainer) return;
@@ -3505,7 +3770,8 @@
 
   addMultiFileBtn?.addEventListener("click", () => {
     const rows = multiFileContainer?.querySelectorAll(".multi-file-row") || [];
-    const nextDefault = MULTI_FILE_DEFAULTS[rows.length] || "0x10000";
+    const defaults = MULTI_FILE_DEFAULTS();
+    const nextDefault = defaults[rows.length] || "0x10000";
     addMultiFileRow(nextDefault);
   });
 
@@ -3521,10 +3787,7 @@
     const fileArray = [];
     for (let i = 0; i < sorted.length; i++) {
       const { buffer, address } = sorted[i];
-      const uint8 = new Uint8Array(buffer);
-      let binStr = "";
-      for (let j = 0; j < uint8.length; j++) binStr += String.fromCharCode(uint8[j]);
-      fileArray.push({ data: binStr, address });
+      fileArray.push({ data: new Uint8Array(buffer), address });
       appendLog("  [" + i + "] 0x" + address.toString(16) + " (" + buffer.byteLength + " bytes)");
     }
     try {
@@ -3689,28 +3952,29 @@
       alert("Select a remote firmware from the list first.");
       return;
     }
-    const plan = buildWritePlanSelected(selectedRemoteAsset);
-    if (!confirmWritePlan(plan)) {
-      appendLog("Remote flash cancelled.");
-      return;
-    }
     try {
-      await ensureConnectedForFlash();
-      appendLog("Downloading remote firmware: " + selectedRemoteAsset.name);
-      setStatus("Downloading remote firmware…", "connected");
+      // Docs hosts firmware same-origin. GitHub releases can't be fetched (CORS),
+      // so we load bytes into a blob: URL — then esp-web-tools installs exactly like docs.
+      appendLog("Preparing remote firmware for esp-web-tools: " + selectedRemoteAsset.name);
+      setStatus("Preparing firmware…");
       const buf = await downloadRemoteFirmware(selectedRemoteAsset);
-      appendLog("Download complete (" + buf.byteLength + " bytes).");
-      await writeMergedBin(buf, selectedRemoteAsset.name);
-      addHistoryEntry({
-        type: "remote",
-        name: selectedRemoteAsset.name,
-      });
+      appendLog("Prepared (" + buf.byteLength + " bytes).");
+      firmwareBuffer = buf;
+      firmwareName = selectedRemoteAsset.name;
+      if (filenameEl) filenameEl.textContent = firmwareName;
+      const chip =
+        (projectCatalog.find((p) => p.repo === (repoInput?.value || "").trim()) || {}).chipFamily ||
+        detectChipFamilyForInstall();
+      const addr = suggestAddressForAsset(selectedRemoteAsset.name);
+      if (flashAddressInput) flashAddressInput.value = "0x" + addr.toString(16);
+      setInstallFromBuffer(buf, selectedRemoteAsset.name, chip, addr);
+      addHistoryEntry({ type: "remote", name: selectedRemoteAsset.name });
+      appendLog("Ready — click Install firmware (esp-web-tools). No Connect step needed.");
+      setStatus("Ready to install", "connected");
     } catch (e) {
       const msg = formatError(e);
-      const hint = hintForError(e);
-      appendLog("Remote flash error: " + msg);
-      if (hint) appendLog("Hint: " + hint);
-      setStatus("Remote flash error", "error");
+      appendLog("Prepare failed: " + msg);
+      setStatus("Prepare failed", "error");
     }
   };
 

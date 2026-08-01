@@ -3,9 +3,9 @@
     "id": "esp32-div",
     "name": "ESP32-DIV",
     "repo": "cifertech/ESP32-DIV",
-    "chipFamily": "ESP32",
+    "chipFamily": "ESP32-S3",
     "description": "Multi-tool ESP32 device with RF + WiFi features.",
-    "tags": ["esp32", "rf", "wifi"],
+    "tags": ["esp32", "esp32-s3", "rf", "wifi"],
     "assetFilter": ".bin"
   },
   {
