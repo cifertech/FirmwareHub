@@ -5,96 +5,105 @@
   <title>FirmwareHub · CiferTech</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#056EB9" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --radius-xl: 20px;
-      --radius-md: 12px;
+      --radius-xl: 16px;
+      --radius-md: 10px;
+      --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+      --font-pixel: "Doto", "JetBrains Mono", ui-monospace, monospace;
     }
 
     body[data-theme="dark"] {
-      --bg: #0d1117;
-      --bg-soft: #161b22;
-      --body-gradient: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
-      --shell-bg: rgba(22,27,34,0.98);
-      --shell-border: rgba(110,118,129,0.25);
-      --shell-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      --panel: rgba(22,27,34,0.97);
-      --panel-border: rgba(110,118,129,0.25);
-      --panel-overlay: rgba(249,115,22,0.35);
-      --surface: rgba(13,17,23,0.9);
-      --surface-strong: #161b22;
-      --border: rgba(110,118,129,0.3);
-      --shadow-soft: 0 4px 16px rgba(0,0,0,0.35);
-      --accent: #f97316;
-      --accent-soft: rgba(249,115,22,0.15);
-      --accent-contrast: #010409;
-      --accent-hover: #fb923c;
-      --accent-active: #ea580c;
-      --accent-ring: rgba(249,115,22,0.35);
-      --accent-border-soft: rgba(249,115,22,0.28);
-      --btn-border: rgba(255,255,255,0.12);
-      --btn-shadow: 0 1px 2px rgba(0,0,0,0.28);
-      --btn-shadow-hover: 0 6px 16px rgba(0,0,0,0.32);
-      --btn-shadow-weak: 0 1px 2px rgba(0,0,0,0.22);
-      --btn-shadow-weak-hover: 0 4px 12px rgba(0,0,0,0.28);
-      --text-main: #e6edf3;
-      --text-soft: #8b949e;
-      --danger: #f85149;
-      --danger-surface: rgba(248,81,73,0.15);
-      --danger-border: rgba(248,81,73,0.5);
-      --danger-text: #ffe4e1;
-      --input-bg: rgba(13,17,23,0.95);
-      --tag-dot-online: #4ade80;
+      --bg: #080808;
+      --bg-soft: #0d0d0d;
+      --body-gradient: none;
+      --shell-bg: rgba(10, 10, 10, 0.82);
+      --shell-border: rgba(255, 255, 255, 0.1);
+      --shell-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+      --panel: rgba(10, 10, 10, 0.72);
+      --panel-border: rgba(255, 255, 255, 0.1);
+      --panel-overlay: rgba(238, 58, 23, 0.45);
+      --surface: rgba(17, 17, 17, 0.9);
+      --surface-strong: #111111;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
+      --accent: #ee3a17;
+      --accent-soft: rgba(238, 58, 23, 0.12);
+      --accent-contrast: #fafafa;
+      --accent-hover: #ff4d2a;
+      --accent-active: #c92f12;
+      --accent-ring: rgba(238, 58, 23, 0.35);
+      --accent-border-soft: rgba(238, 58, 23, 0.28);
+      --cyan: #00e5ff;
+      --mag: #ff2d95;
+      --btn-border: rgba(255, 255, 255, 0.12);
+      --btn-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      --btn-shadow-hover: 0 6px 18px rgba(238, 58, 23, 0.22);
+      --btn-shadow-weak: 0 1px 2px rgba(0, 0, 0, 0.25);
+      --btn-shadow-weak-hover: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --text-main: #f4f4f5;
+      --text-soft: #737373;
+      --danger: #ff2d95;
+      --danger-surface: rgba(255, 45, 149, 0.12);
+      --danger-border: rgba(255, 45, 149, 0.4);
+      --danger-text: #ffc1e0;
+      --input-bg: rgba(8, 8, 8, 0.95);
+      --tag-dot-online: #00e5ff;
     }
 
     body[data-theme="light"] {
-      --bg: #f0f2f5;
-      --bg-soft: #ffffff;
-      --body-gradient: linear-gradient(180deg, #ffffff 0%, #f0f2f5 100%);
-      --shell-bg: rgba(255,255,255,0.98);
-      --shell-border: rgba(31,35,40,0.1);
-      --shell-shadow: 0 8px 32px rgba(31,35,40,0.12);
-      --panel: rgba(255,255,255,0.98);
-      --panel-border: rgba(31,35,40,0.1);
-      --panel-overlay: rgba(249,115,22,0.25);
-      --surface: rgba(246,248,250,0.95);
+      --bg: #f4f4f5;
+      --bg-soft: #fafafa;
+      --body-gradient: none;
+      --shell-bg: rgba(255, 255, 255, 0.92);
+      --shell-border: rgba(0, 0, 0, 0.1);
+      --shell-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+      --panel: rgba(255, 255, 255, 0.9);
+      --panel-border: rgba(0, 0, 0, 0.08);
+      --panel-overlay: rgba(238, 58, 23, 0.35);
+      --surface: #fafafa;
       --surface-strong: #ffffff;
-      --border: rgba(31,35,40,0.12);
-      --shadow-soft: 0 4px 16px rgba(31,35,40,0.08);
-      --accent: #ea580c;
-      --accent-soft: rgba(249,115,22,0.12);
+      --border: rgba(0, 0, 0, 0.1);
+      --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --accent: #ee3a17;
+      --accent-soft: rgba(238, 58, 23, 0.1);
       --accent-contrast: #ffffff;
-      --accent-hover: #f97316;
-      --accent-active: #c2410c;
-      --accent-ring: rgba(234,88,12,0.28);
-      --accent-border-soft: rgba(234,88,12,0.22);
-      --btn-border: rgba(31,35,40,0.14);
-      --btn-shadow: 0 1px 2px rgba(31,35,40,0.16);
-      --btn-shadow-hover: 0 6px 16px rgba(31,35,40,0.18);
-      --btn-shadow-weak: 0 1px 2px rgba(31,35,40,0.12);
-      --btn-shadow-weak-hover: 0 4px 12px rgba(31,35,40,0.14);
-      --text-main: #1f2937;
-      --text-soft: #6b7280;
-      --danger: #cf222e;
-      --danger-surface: rgba(207,34,46,0.1);
-      --danger-border: rgba(207,34,46,0.35);
+      --accent-hover: #ff4d2a;
+      --accent-active: #c92f12;
+      --accent-ring: rgba(238, 58, 23, 0.28);
+      --accent-border-soft: rgba(238, 58, 23, 0.22);
+      --cyan: #056eb9;
+      --mag: #ff2d95;
+      --btn-border: rgba(0, 0, 0, 0.12);
+      --btn-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+      --btn-shadow-hover: 0 6px 16px rgba(238, 58, 23, 0.18);
+      --btn-shadow-weak: 0 1px 2px rgba(0, 0, 0, 0.06);
+      --btn-shadow-weak-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --text-main: #111111;
+      --text-soft: #737373;
+      --danger: #cf2e2e;
+      --danger-surface: rgba(207, 46, 46, 0.1);
+      --danger-border: rgba(207, 46, 46, 0.35);
       --danger-text: #8c1b23;
       --input-bg: #ffffff;
-      --tag-dot-online: #1a7f37;
+      --tag-dot-online: #056eb9;
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
-        "SF Pro Text", sans-serif;
+      font-family: var(--font-sans);
     }
 
     body {
       margin: 0;
       min-height: 100vh;
       background: var(--bg);
-      background-image: var(--body-gradient);
       color: var(--text-main);
       display: flex;
       justify-content: center;
@@ -102,32 +111,67 @@
       padding: 32px 16px;
       position: relative;
       z-index: 0;
-      transition:
-        background 0.3s ease,
-        color 0.3s ease;
+      transition: background 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
     body::before {
       content: "";
       position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(249,115,22,0.06), transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(251,146,60,0.04), transparent 40%);
+      inset: -20%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M0 28h56M28 0v56' stroke='%23fff' stroke-opacity='0.05' stroke-width='0.5'/%3E%3Ccircle cx='28' cy='28' r='1' fill='%23ee3a17' fill-opacity='0.45'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 56px 56px;
+      animation: ct-bg-drift 72s linear infinite;
+      pointer-events: none;
+      z-index: -2;
       opacity: 1;
+    }
+    body[data-theme="light"]::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M0 28h56M28 0v56' stroke='%23000' stroke-opacity='0.06' stroke-width='0.5'/%3E%3Ccircle cx='28' cy='28' r='1' fill='%23ee3a17' fill-opacity='0.35'/%3E%3C/svg%3E");
+      opacity: 0.7;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      width: 80%;
+      height: 55%;
+      top: -18%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse, rgba(238, 58, 23, 0.16), transparent 68%);
+      filter: blur(40px);
       pointer-events: none;
       z-index: -1;
+      animation: ct-bg-glow 7s ease-in-out infinite;
+    }
+
+    @keyframes ct-bg-drift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(56px, 56px); }
+    }
+    @keyframes ct-bg-glow {
+      0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::before,
+      body::after {
+        animation: none !important;
+      }
     }
 
     .shell {
       width: 100%;
-      max-width: 1200px;
+      max-width: 1120px;
       background: var(--shell-bg);
-      border-radius: 24px;
+      border-radius: var(--radius-xl);
       border: 1px solid var(--shell-border);
       box-shadow: var(--shell-shadow);
       padding: 24px 28px 28px;
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(10px);
       display: flex;
       flex-direction: column;
       gap: 22px;
@@ -135,17 +179,31 @@
       overflow: hidden;
     }
 
+    .shell::before,
     .shell::after {
       content: "";
       position: absolute;
-      inset: 0;
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.04);
+      width: 16px;
+      height: 16px;
+      border-color: var(--accent);
+      border-style: solid;
       pointer-events: none;
+      z-index: 2;
+      opacity: 0.65;
+    }
+    .shell::before {
+      top: 10px;
+      left: 10px;
+      border-width: 2px 0 0 2px;
+    }
+    .shell::after {
+      bottom: 10px;
+      right: 10px;
+      border-width: 0 2px 2px 0;
     }
 
     body[data-theme="light"] .shell::after {
-      border-color: rgba(0,0,0,0.03);
+      /* keep HUD corners */
     }
 
     header {
@@ -161,34 +219,23 @@
     .brand {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-    }
-
-    .brand-heading {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: baseline;
+      gap: 14px;
     }
 
     .brand-title {
-      font-size: 24px;
+      font-family: var(--font-pixel);
+      font-size: 26px;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text-main);
-    }
-
-    .brand-sub {
-      font-size: 12px;
-      color: var(--text-soft);
       letter-spacing: 0.04em;
-      text-transform: none;
+      text-transform: uppercase;
+      color: var(--text-main);
     }
 
     .brand-pills {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
+      margin-top: 2px;
     }
 
     .brand-pill {
@@ -254,7 +301,7 @@
       border-radius: 999px;
       padding: 7px 14px;
       text-decoration: none;
-      background: linear-gradient(135deg, #f97316, #f43f5e);
+      background: linear-gradient(135deg, #ee3a17, #ff2d95);
       box-shadow: 0 14px 30px rgba(244,63,94,0.35);
       transition:
         transform 0.2s ease,
@@ -517,6 +564,520 @@
       letter-spacing: 0.02em;
     }
 
+    /* App views: Home | Install | Advanced */
+    .app-view {
+      display: none;
+    }
+    .app-view.active {
+      display: block;
+    }
+
+    .home-intro {
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .home-heading {
+      margin: 0 0 8px;
+      font-family: var(--font-pixel);
+      font-size: clamp(1.65rem, 3.5vw, 2.15rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--text-main);
+    }
+    .home-sub {
+      margin: 0;
+      font-size: 15px;
+      color: var(--text-soft);
+      max-width: 36rem;
+      line-height: 1.5;
+    }
+
+    .home-project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .home-project-card {
+      --card-accent: var(--accent);
+      --card-glow: rgba(238, 58, 23, 0.14);
+      text-align: left;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-main);
+      box-shadow: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 280px;
+      width: 100%;
+      font: inherit;
+      position: relative;
+      isolation: isolate;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: homeCardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: calc(var(--i, 0) * 70ms);
+      transition:
+        border-color 0.25s ease,
+        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+    }
+    .home-project-card.is-settled {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .home-project-card:hover,
+    .home-project-card:not(:disabled):hover {
+      background: var(--surface);
+      color: var(--text-main);
+      border-color: color-mix(in srgb, var(--card-accent) 45%, var(--border));
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    .home-project-card.is-settled:hover {
+      transform: translateY(-3px);
+    }
+    .home-project-card:focus-visible,
+    .home-project-card:not(:disabled):focus-visible {
+      outline: none;
+      background: var(--surface);
+      color: var(--text-main);
+      border-color: color-mix(in srgb, var(--card-accent) 55%, var(--border));
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--card-accent) 35%, transparent);
+    }
+    .home-project-card:active,
+    .home-project-card:not(:disabled):active {
+      background: var(--surface);
+      color: var(--text-main);
+      box-shadow: none;
+      transform: translateY(0);
+    }
+    .home-project-card:hover .home-project-card__art-inner {
+      transform: scale(1.04);
+    }
+    .home-project-card:hover .home-project-card__cta {
+      color: var(--card-accent);
+      letter-spacing: 0.04em;
+    }
+
+    .home-project-card.theme-div { --card-accent: #ee3a17; --card-glow: rgba(238,58,23,0.16); }
+    .home-project-card.theme-nrf { --card-accent: #ee3a17; --card-glow: rgba(238,58,23,0.16); }
+    .home-project-card.theme-rf { --card-accent: #ee3a17; --card-glow: rgba(238,58,23,0.16); }
+    .home-project-card.theme-duck { --card-accent: #ee3a17; --card-glow: rgba(238,58,23,0.16); }
+    .home-project-card.theme-tama { --card-accent: #ee3a17; --card-glow: rgba(238,58,23,0.16); }
+    .home-project-card.theme-default { --card-accent: #ee3a17; --card-glow: rgba(238,58,23,0.14); }
+
+    .home-project-card__art {
+      position: relative;
+      height: 148px;
+      background: transparent;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .home-project-card__art-inner {
+      width: 118px;
+      height: 118px;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .home-project-card__art-inner svg,
+    .home-project-card__art-inner .project-art-img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      overflow: visible;
+    }
+    .home-project-card__art-inner .project-art-img {
+      animation: artFloat 3.6s ease-in-out infinite;
+    }
+    body[data-theme="light"] .home-project-card__art-inner .project-art-img {
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08));
+    }
+
+    .home-project-card__body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px 16px 16px;
+      flex: 1;
+    }
+    .home-project-card__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .home-project-card__name {
+      font-family: var(--font-pixel);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .home-project-card__chip {
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--card-accent) 35%, var(--border));
+      color: var(--card-accent);
+      background: color-mix(in srgb, var(--card-accent) 12%, transparent);
+    }
+    .home-project-card__desc {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.4;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .home-project-card__foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .home-project-card__status {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--card-accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .home-project-card__status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--card-accent);
+      box-shadow: 0 0 0 0 var(--card-glow);
+      animation: statusPulse 2s ease-out infinite;
+    }
+    .home-project-card__status.is-missing {
+      color: var(--text-soft);
+      font-weight: 500;
+    }
+    .home-project-card__status.is-missing::before {
+      background: var(--text-soft);
+      animation: none;
+      opacity: 0.5;
+    }
+    .home-project-card__cta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-soft);
+      transition: color 0.2s ease, letter-spacing 0.2s ease;
+    }
+
+    /* Art motion */
+    @keyframes artFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    @keyframes homeCardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes statusPulse {
+      0% { box-shadow: 0 0 0 0 var(--card-glow); }
+      70% { box-shadow: 0 0 0 8px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+    @keyframes wavePulse {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 1; }
+    }
+    @keyframes chipGlow {
+      0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+      50% { filter: drop-shadow(0 0 4px #ee3a17); }
+    }
+    @keyframes skullBadgePulse {
+      0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+      50% { filter: drop-shadow(0 0 8px rgba(238, 58, 23, 0.45)); }
+    }
+    @keyframes skullEyeGlow {
+      0%, 100% { opacity: 0.75; }
+      50% { opacity: 1; filter: drop-shadow(0 0 4px #ee3a17); }
+    }
+    @keyframes nrfTessPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+    @keyframes nrfInnerGlow {
+      0%, 100% { stroke: #ee3a17; opacity: 0.85; }
+      50% { stroke: #ee3a17; opacity: 1; }
+    }
+    @keyframes rfJesterBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    @keyframes rfBellBlink {
+      0%, 100% { opacity: 0.75; }
+      50% { opacity: 1; }
+    }
+    @keyframes duckBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    @keyframes usbSlide {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(3px); }
+    }
+    @keyframes petBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      40% { transform: translateY(-5px) scale(1.03); }
+      60% { transform: translateY(0) scale(0.98); }
+    }
+    @keyframes eyeBlink {
+      0%, 46%, 54%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.1); }
+    }
+    @keyframes wifiRing {
+      0% { opacity: 0.8; transform: scale(0.7); }
+      100% { opacity: 0; transform: scale(1.35); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .home-project-card {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+      .home-project-card:hover { transform: none; }
+      .home-project-card__art-inner,
+      .home-project-card__art-inner .project-art-img,
+      .install-card__art-img,
+      .home-project-card__status::before,
+      .install-status-msg.is-ready::before {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    .home-footer-actions {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .home-advanced-btn {
+      min-height: 44px;
+      padding: 12px 22px;
+      font-family: var(--font-pixel);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--border));
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(238, 58, 23, 0.16);
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease,
+        color 0.15s ease;
+    }
+    .home-advanced-btn:not(:disabled):hover,
+    .home-advanced-btn:not(:disabled):focus-visible {
+      color: var(--text-main);
+      background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+      border-color: var(--accent);
+      box-shadow: 0 12px 26px rgba(238, 58, 23, 0.24);
+      transform: translateY(-1px);
+    }
+    .home-advanced-btn:not(:disabled):active {
+      color: var(--text-main);
+      background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+      border-color: var(--accent);
+      box-shadow: 0 6px 14px rgba(238, 58, 23, 0.18);
+      transform: translateY(0);
+    }
+
+    .install-view-panel {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .install-back {
+      margin-bottom: 18px;
+    }
+    .install-card {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), transparent 42%),
+        var(--panel);
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+    }
+    .install-card__art {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 20px 8px;
+      background: transparent;
+      min-height: 168px;
+    }
+    .install-card__art-img {
+      width: 132px;
+      height: 132px;
+      object-fit: contain;
+      display: block;
+      animation: artFloat 3.6s ease-in-out infinite;
+    }
+    .install-card__art[hidden],
+    .install-card__art-img[hidden] {
+      display: none !important;
+    }
+    .install-card__body {
+      padding: 8px 22px 24px;
+    }
+    .install-project-name {
+      margin: 0 0 10px;
+      font-family: var(--font-pixel);
+      font-size: clamp(1.55rem, 3vw, 2rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .install-project-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .install-project-meta .badge {
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+    }
+    .install-project-meta .docs-link {
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+    .install-project-desc {
+      margin: 0 auto 22px;
+      max-width: 34ch;
+      font-size: 14px;
+      color: var(--text-soft);
+      line-height: 1.5;
+      text-align: center;
+    }
+    .install-board-block {
+      margin-bottom: 20px;
+    }
+    .install-board-block[hidden] {
+      display: none !important;
+    }
+    .install-board-block .block-title {
+      margin-bottom: 10px;
+      text-align: center;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+    .install-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
+      margin: 0 0 10px;
+    }
+    .install-cta esp-web-install-button {
+      display: block;
+      width: 100%;
+    }
+    .install-cta esp-web-install-button button,
+    .install-cta .ewt-install-btn {
+      width: 100%;
+      justify-content: center;
+      min-height: 48px;
+      padding: 14px 20px;
+      font-size: 13px;
+      border-radius: 12px;
+      letter-spacing: 0.08em;
+      box-shadow: 0 10px 24px rgba(238, 58, 23, 0.28);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .install-cta esp-web-install-button button:hover,
+    .install-cta .ewt-install-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(238, 58, 23, 0.34);
+    }
+    .install-status-msg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-soft);
+      margin: 0 0 14px;
+      min-height: 1.2em;
+      text-align: center;
+    }
+    .install-status-msg::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-soft);
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+    .install-status-msg.is-ready {
+      color: var(--accent);
+    }
+    .install-status-msg.is-ready::before {
+      background: var(--accent);
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(238, 58, 23, 0.35);
+      animation: statusPulse 2s ease-out infinite;
+    }
+    .install-status-msg.is-error {
+      color: var(--danger);
+    }
+    .install-status-msg.is-error::before {
+      background: var(--danger);
+      opacity: 1;
+      animation: none;
+    }
+    .install-browser-tip {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-soft);
+      text-align: center;
+      line-height: 1.45;
+    }
+
+    .advanced-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
     /* Main tabs */
     .main-tabs {
       display: flex;
@@ -701,7 +1262,7 @@
     }
 
     .panel:hover {
-      border-color: rgba(249,115,22,0.35);
+      border-color: rgba(238,58,23,0.35);
       box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
 
@@ -874,7 +1435,7 @@
       box-shadow: var(--btn-shadow);
     }
 
-    button:focus-visible {
+    button:focus-visible:not(.home-project-card) {
       outline: none;
       box-shadow: 0 0 0 3px var(--accent-ring), var(--btn-shadow-hover);
     }
@@ -898,12 +1459,12 @@
       outline-offset: 2px;
     }
 
-    button:not(:disabled):hover {
+    button:not(:disabled):hover:not(.home-project-card) {
       background: var(--accent-hover);
       box-shadow: var(--btn-shadow-hover);
     }
 
-    button:not(:disabled):active:not([role="tab"]):not(.secondary):not(.btn-secondary):not(.danger):not(.btn-danger) {
+    button:not(:disabled):active:not([role="tab"]):not(.secondary):not(.btn-secondary):not(.danger):not(.btn-danger):not(.home-project-card) {
       background: var(--accent-active);
       box-shadow: var(--btn-shadow);
       transform: translateY(1px);
@@ -1042,8 +1603,7 @@
       resize: vertical;
       min-height: 70px;
       max-height: 150px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
+      font-family: var(--font-mono);
     }
 
     .label {
@@ -1079,7 +1639,7 @@
     }
 
     .metric:hover {
-      border-color: rgba(249,115,22,0.25);
+      border-color: rgba(238,58,23,0.25);
       background: var(--surface-strong);
     }
 
@@ -1101,14 +1661,14 @@
       width: 8px;
       height: 8px;
       border-radius: 999px;
-      background: #f97316;
-      box-shadow: 0 0 8px #f97316;
+      background: #ee3a17;
+      box-shadow: 0 0 8px #ee3a17;
       margin-right: 4px;
     }
 
     .status-dot.connected {
-      background: #22c55e;
-      box-shadow: 0 0 8px #22c55e;
+      background: #00e5ff;
+      box-shadow: 0 0 8px #00e5ff;
     }
 
     .status-text {
@@ -1157,7 +1717,7 @@
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #fed7aa, #fb923c, #f97316);
+      background: linear-gradient(90deg, #ffb4a4, #ff4d2a, #ee3a17);
       background-size: 200% 100%;
       animation: progressAnim 1.2s linear infinite;
       transition: width 0.2s ease;
@@ -1175,8 +1735,7 @@
       padding: 12px 14px;
       font-size: 12px;
       line-height: 1.5;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
+      font-family: var(--font-mono);
       max-height: 160px;
       overflow-y: auto;
       color: var(--text-main);
@@ -1228,13 +1787,13 @@
     }
 
     .project-card:hover {
-      border-color: rgba(249,115,22,0.5);
+      border-color: rgba(238,58,23,0.5);
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     .project-card.active {
       border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(249,115,22,0.25);
+      box-shadow: 0 0 0 2px rgba(238,58,23,0.25);
     }
 
     .project-card-title {
@@ -1363,7 +1922,7 @@
     }
 
     .stat-card:hover {
-      border-color: rgba(249,115,22,0.2);
+      border-color: rgba(238,58,23,0.2);
       background: var(--surface-strong);
     }
 
@@ -1386,13 +1945,13 @@
       position: absolute;
       top: -4px;
       right: -4px;
-      background: #f97316;
+      background: #ee3a17;
       color: white;
       font-size: 10px;
       font-weight: 700;
       padding: 2px 6px;
       border-radius: 999px;
-      box-shadow: 0 2px 8px rgba(249,115,22,0.5);
+      box-shadow: 0 2px 8px rgba(238,58,23,0.5);
     }
 
     .submission-grid {
@@ -1427,7 +1986,7 @@
     .github-item:hover,
     .history-item:hover {
       background: var(--surface-strong);
-      border-color: rgba(249,115,22,0.2);
+      border-color: rgba(238,58,23,0.2);
     }
 
     .history-item span,
@@ -1496,7 +2055,7 @@
 
     .multi-file-row .addr-input {
       width: 90px;
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
       font-size: 12px;
     }
 
@@ -1520,7 +2079,7 @@
     }
 
     .release-set-preview .preview-addr {
-      font-family: ui-monospace, monospace;
+      font-family: var(--font-mono);
       min-width: 56px;
       color: var(--accent);
     }
@@ -1531,8 +2090,7 @@
     }
 
     .mono {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
+      font-family: var(--font-mono);
     }
 
     a.link {
@@ -1573,35 +2131,70 @@
     .board-picker {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
+      gap: 10px;
     }
     .board-pick {
-      text-align: left;
-      padding: 12px 14px;
-      border-radius: 12px;
+      text-align: center;
+      padding: 14px 10px 12px;
+      border-radius: 14px;
       border: 1px solid var(--border);
-      background: var(--surface);
+      background: rgba(255, 255, 255, 0.02);
       color: var(--text-main);
       cursor: pointer;
-      transition: border-color 0.15s ease, background 0.15s ease;
+      box-shadow: none;
+      position: relative;
+      transition:
+        border-color 0.18s ease,
+        background 0.18s ease,
+        transform 0.18s ease;
     }
     .board-pick:hover {
-      border-color: var(--accent-border-soft);
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+      background: rgba(255, 255, 255, 0.04);
     }
-    .board-pick.is-active {
+    .board-pick:not(:disabled):hover,
+    .board-pick:not(:disabled):active,
+    .board-pick:focus-visible {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      box-shadow: none;
+      transform: none;
+    }
+    .board-pick.is-active,
+    .board-pick.is-active:not(:disabled):hover,
+    .board-pick.is-active:not(:disabled):active,
+    .board-pick.is-active:focus-visible {
       border-color: var(--accent);
-      background: var(--accent-soft);
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
+      color: var(--text-main);
+      box-shadow: none;
+    }
+    .board-pick.is-active::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
     }
     .board-pick__name {
       display: block;
+      font-family: var(--font-pixel);
       font-weight: 700;
-      font-size: 13px;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
     .board-pick__chip {
       display: block;
-      margin-top: 4px;
+      margin-top: 6px;
       font-size: 11px;
       color: var(--text-soft);
+    }
+    .board-pick.is-active .board-pick__chip {
+      color: color-mix(in srgb, var(--accent) 70%, var(--text-soft));
     }
     .install-file-row {
       display: flex;
@@ -1624,16 +2217,23 @@
     esp-web-install-button {
       display: inline-block;
     }
+    /* Hide esp-web-tools unsupported/not-allowed fallback copy */
+    esp-web-install-button.hub-install[install-unsupported] {
+      display: none !important;
+    }
     esp-web-install-button button,
     .ewt-install-btn {
       appearance: none;
       border: 1px solid var(--accent);
       background: var(--accent);
       color: var(--accent-contrast);
-      font-weight: 700;
-      font-size: 13px;
-      padding: 10px 16px;
-      border-radius: 10px;
+      font-family: var(--font-pixel);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 11px 18px;
+      border-radius: 8px;
       cursor: pointer;
     }
     esp-web-install-button button:hover,
@@ -1654,14 +2254,11 @@
 <div class="shell">
   <header>
     <div class="brand">
-      <div class="brand-heading">
-        <div class="brand-title">FirmwareHub</div>
-        <div class="brand-sub">Created by CiferTech · ESP32 / ESP8266 Browser Flasher</div>
-      </div>
+      <div class="brand-title">FirmwareHub</div>
       <div class="brand-pills">
-        <span class="brand-pill accent">WebSerial Ready</span>
-        <span class="brand-pill">Secure USB</span>
-        <span class="brand-pill">OTA Helper</span>
+        <span class="brand-pill accent">WebSerial</span>
+        <span class="brand-pill">ESP32 Flasher</span>
+        <span class="brand-pill">Open Hardware</span>
       </div>
     </div>
     <div class="header-actions">
@@ -1669,9 +2266,6 @@
         <div id="connDot" class="tag-dot"></div>
         <span id="connLabel">No device</span>
       </div>
-      <a class="docs-link" href="https://github.com/cifertech" target="_blank" rel="noreferrer">
-        Docs &amp; Repo
-      </a>
       <a class="support-link" href="https://www.patreon.com/cifertech" target="_blank" rel="noreferrer">
         ❤️ Support on Patreon
       </a>
@@ -1682,6 +2276,74 @@
   </header>
 
   <main>
+    <!-- HOME: project grid -->
+    <div id="view-home" class="app-view active" aria-label="Projects">
+      <div class="home-intro">
+        <h1 class="home-heading">Choose a project</h1>
+        <p class="home-sub">Pick a device, plug in USB, and install firmware in one click.</p>
+      </div>
+      <div id="homeProjectGrid" class="home-project-grid" aria-live="polite"></div>
+      <div class="home-footer-actions">
+        <button type="button" id="openAdvancedBtn" class="home-advanced-btn">Advanced tools →</button>
+      </div>
+    </div>
+
+    <!-- INSTALL: one-click flash -->
+    <div id="view-install" class="app-view" aria-label="Install firmware" hidden>
+      <div class="install-view-panel">
+        <div class="install-back">
+          <button type="button" id="installBackBtn" class="secondary btn-small">← All projects</button>
+        </div>
+        <section class="install-card">
+          <div class="install-card__art" id="installProjectArt" hidden>
+            <img class="install-card__art-img" id="installProjectArtImg" alt="" width="132" height="132" decoding="async" />
+          </div>
+          <div class="install-card__body">
+            <h2 class="install-project-name" id="installProjectName">—</h2>
+            <div class="install-project-meta">
+              <span class="badge mono" id="installProjectChip">—</span>
+              <a class="docs-link" id="installProjectRepo" href="#" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+            <p class="install-project-desc" id="installProjectDesc"></p>
+
+            <div class="install-board-block" id="installBoardBlock" hidden>
+              <div class="block-title">Choose board</div>
+              <div class="board-picker" id="installBoardPicker" role="group" aria-label="ESP32-DIV board">
+                <button type="button" class="board-pick is-active" data-div-board="v2">
+                  <span class="board-pick__name">v2</span>
+                  <span class="board-pick__chip">ESP32-S3</span>
+                </button>
+                <button type="button" class="board-pick" data-div-board="v1">
+                  <span class="board-pick__name">v1</span>
+                  <span class="board-pick__chip">ESP32</span>
+                </button>
+                <button type="button" class="board-pick" data-div-board="cyd">
+                  <span class="board-pick__name">CYD</span>
+                  <span class="board-pick__chip">ESP32</span>
+                </button>
+              </div>
+            </div>
+
+            <p class="install-status-msg" id="installStatusMsg">Preparing firmware…</p>
+            <div class="install-cta">
+              <esp-web-install-button class="hub-install" id="install-btn-home" style="display:none;">
+                <button slot="activate" class="ewt-install-btn">Install firmware</button>
+              </esp-web-install-button>
+            </div>
+            <p class="install-browser-tip" id="browser-warn-home">
+              Plug in the board over USB, then click Install. Hold BOOT if the port picker is empty.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ADVANCED: existing flasher tabs -->
+    <div id="view-advanced" class="app-view" aria-label="Advanced tools" hidden>
+      <div class="advanced-bar">
+        <button type="button" id="advancedBackBtn" class="secondary btn-small">← Projects</button>
+        <span class="value-soft">Advanced flasher tools</span>
+      </div>
     <nav class="main-tabs" role="tablist" aria-label="Main sections">
       <button type="button" role="tab" id="main-tab-connect" data-tab="connect" aria-selected="true" aria-controls="tab-page-connect">Connect</button>
       <button type="button" role="tab" id="main-tab-local" data-tab="local" aria-selected="false" aria-controls="tab-page-local">Local Flash</button>
@@ -1854,10 +2516,8 @@
                 <div class="block-title">Install</div>
                 <div class="hint" style="margin-bottom:8px;">Uses esp-web-tools with a blob manifest (docs install method). No Connect step needed.</div>
                 <div class="install-actions">
-                  <esp-web-install-button class="hub-install" id="install-btn-local" manifest="manifest.json">
+                  <esp-web-install-button class="hub-install" id="install-btn-local" style="display:none;">
                     <button slot="activate" class="ewt-install-btn">⚡ Install firmware</button>
-                    <span slot="unsupported">Use Chrome or Edge on desktop.</span>
-                    <span slot="not-allowed">Needs HTTPS or http://localhost.</span>
                   </esp-web-install-button>
                   <button id="flashLocalBtn" class="secondary btn-small" title="Legacy esptool-js (requires Connect)">Legacy flash</button>
                   <button id="eraseBtn" class="secondary btn-small">Erase Flash (Full)</button>
@@ -1934,27 +2594,30 @@
                 <div class="block-title">Download &amp; Install</div>
                 <div class="label">Selected</div>
                 <div class="value-soft mono" id="selectedRemote" style="margin-bottom:8px;">—</div>
-                <div class="hint" style="margin-bottom:8px;">
-                  Docs installs from same-origin files. GitHub release URLs block browser fetch (CORS), so:
-                  <strong>Prepare</strong> downloads via the browser then loads the file as a local blob; <strong>Install</strong> uses esp-web-tools like docs.
+                <div class="hint" id="remote-install-hint" style="margin-bottom:8px;">
+                  Pick a project. If its bins are under <code>firmware/</code>, Install is ready. If you already used Connect, Install reuses that port (no second picker).
                 </div>
                 <div class="install-actions" style="margin-bottom:10px;">
-                  <button id="flashRemoteBtn" class="btn-small">Download / Prepare</button>
-                  <esp-web-install-button class="hub-install" id="install-btn-remote" manifest="manifest.json">
+                  <esp-web-install-button class="hub-install" id="install-btn-remote" style="display:none;">
                     <button slot="activate" class="ewt-install-btn">⚡ Install firmware</button>
-                    <span slot="unsupported">Use Chrome or Edge on desktop.</span>
-                    <span slot="not-allowed">Needs HTTPS or http://localhost.</span>
                   </esp-web-install-button>
-                  <a class="secondary btn-small" id="remote-dl-btn" href="#" target="_blank" rel="noopener">Open download</a>
                 </div>
-                <div class="row" style="flex-wrap:wrap; gap:8px;">
+                <div id="remote-file-needed" class="panel-block" hidden style="padding:0; border:none; margin-top:8px;">
+                  <div class="hint" style="margin-bottom:6px;">This release isn’t hosted on FirmwareHub (docs serves files from <code>firmware/</code>). Choose the .bin after downloading:</div>
+                  <div id="remote-dropzone" class="dropzone">
+                    <div>Drop downloaded <span>.bin</span> here or click to choose</div>
+                    <div id="remote-filename" class="filename">No file loaded</div>
+                    <input id="remoteFirmwareInput" type="file" accept=".bin" style="display:none;" />
+                  </div>
+                </div>
+                <div class="row" style="flex-wrap:wrap; gap:8px; margin-top:10px;">
+                  <button id="flashRemoteBtn" class="secondary btn-small" style="display:none;">Load file</button>
                   <button id="flashFullSetBtn" class="secondary btn-small" title="Legacy multi-file flash (requires Connect)">📦 Flash full set (legacy)</button>
                   <button id="openDownloadBtn" class="secondary btn-small" style="display:none;">Open download</button>
                   <button id="copyOtaUrlBtn" class="secondary btn-small">Copy OTA URL</button>
                   <button id="viewChangelogBtn" class="secondary btn-small">📋 Changelog</button>
                 </div>
                 <div id="releaseSetPreview" class="release-set-preview"></div>
-                <div class="hint" style="margin-top:6px;">Prefer a single <em>merged</em> image at offset 0x0 (like ESP32-DIV docs).</div>
               </div>
               <div class="panel-block">
                 <div class="block-title">Flash from URL</div>
@@ -2043,6 +2706,7 @@
         </div>
       </section>
     </div>
+    </div><!-- /view-advanced -->
   </main>
 
   <footer class="shell-footer">
@@ -2112,6 +2776,44 @@
   const remoteShowPrereleases = document.getElementById("remoteShowPrereleases");
   const remoteShowAllAssets = document.getElementById("remoteShowAllAssets");
   const projectCards = document.getElementById("projectCards");
+  const homeProjectGrid = document.getElementById("homeProjectGrid");
+  const openAdvancedBtn = document.getElementById("openAdvancedBtn");
+  const advancedBackBtn = document.getElementById("advancedBackBtn");
+  const installBackBtn = document.getElementById("installBackBtn");
+  const installProjectName = document.getElementById("installProjectName");
+  const installProjectChip = document.getElementById("installProjectChip");
+  const installProjectRepo = document.getElementById("installProjectRepo");
+  const installProjectDesc = document.getElementById("installProjectDesc");
+  const installProjectArt = document.getElementById("installProjectArt");
+  const installProjectArtImg = document.getElementById("installProjectArtImg");
+  const installBoardBlock = document.getElementById("installBoardBlock");
+  const installBoardPicker = document.getElementById("installBoardPicker");
+  const installStatusMsg = document.getElementById("installStatusMsg");
+  const installBtnHome = document.getElementById("install-btn-home");
+
+  let homeInstallGen = 0;
+  let selectedDivBoard = "v2";
+
+  const DIV_BOARD_PACKS = {
+    v2: {
+      label: "ESP32-DIV v2 (hosted merged)",
+      chipFamily: "ESP32-S3",
+      parts: [{ path: "firmware/ESP32-DIV-v2-v1.7.0-merged.bin", offset: 0 }],
+      download: "firmware/ESP32-DIV-v2-v1.7.0-merged.bin",
+    },
+    v1: {
+      label: "ESP32-DIV v1 (hosted merged)",
+      chipFamily: "ESP32",
+      parts: [{ path: "firmware/ESP32-DIV-v1-v1.7.0-merged.bin", offset: 0 }],
+      download: "firmware/ESP32-DIV-v1-v1.7.0-merged.bin",
+    },
+    cyd: {
+      label: "ESP32-DIV CYD (hosted merged)",
+      chipFamily: "ESP32",
+      parts: [{ path: "firmware/ESP32-DIV-cyd-v1.7.0-merged.bin", offset: 0 }],
+      download: "firmware/ESP32-DIV-cyd-v1.7.0-merged.bin",
+    },
+  };
 
   const submitProjectSelect = document.getElementById("submitProjectSelect");
   const submitProjectName = document.getElementById("submitProjectName");
@@ -2267,21 +2969,21 @@
       statusDot.style.background = "#f97373";
       statusDot.style.boxShadow = "0 0 8px #f97373";
     } else {
-      statusDot.style.background = mode === "connected" ? "#22c55e" : "#f97316";
+      statusDot.style.background = mode === "connected" ? "#00e5ff" : "#ee3a17";
       statusDot.style.boxShadow =
-        "0 0 8px " + (mode === "connected" ? "#22c55e" : "#f97316");
+        "0 0 8px " + (mode === "connected" ? "#00e5ff" : "#ee3a17");
     }
   }
 
   function setConnectionUi(connected, chipFamily) {
     if (disconnectBtn) disconnectBtn.disabled = !connected;
     if (connected) {
-      connDot.style.background = "#22c55e";
-      connDot.style.boxShadow = "0 0 10px #22c55e";
+      connDot.style.background = "#00e5ff";
+      connDot.style.boxShadow = "0 0 10px #00e5ff";
       connLabel.textContent = "Connected · " + (chipFamily || "ESP");
     } else {
-      connDot.style.background = "#f97316";
-      connDot.style.boxShadow = "0 0 10px #f97316";
+      connDot.style.background = "#ee3a17";
+      connDot.style.boxShadow = "0 0 10px #ee3a17";
       connLabel.textContent = "No device";
       chipFamilyBadge.textContent = "No chip";
       chipNameEl.textContent = "—";
@@ -2294,8 +2996,10 @@
 
   // ===== ESP-WEB-TOOLS (docs install method) =====
   // Build a JSON manifest blob → set on <esp-web-install-button manifest="...">
+  // Never leave a stale ESP32-DIV default manifest on the button.
   let manifestBlobUrl = null;
   let firmwareBlobUrl = null;
+  let installReady = false;
 
   function revokeInstallUrls() {
     if (manifestBlobUrl) {
@@ -2308,11 +3012,35 @@
     }
   }
 
-  function setInstallManifestFromParts({ name, version, chipFamily, firmwarePathOrUrl, offset }) {
+  function clearInstallManifest(reason) {
+    revokeInstallUrls();
+    installReady = false;
+    document.querySelectorAll("esp-web-install-button.hub-install").forEach((btn) => {
+      btn.removeAttribute("manifest");
+      btn.style.display = "none";
+    });
+    if (reason) appendLog(reason);
+  }
+
+  function cacheBustUrl(pathOrUrl) {
+    const u = new URL(pathOrUrl, window.location.href);
+    u.searchParams.set("cb", String(Date.now()));
+    return u.href;
+  }
+
+  function setInstallManifestFromParts({ name, version, chipFamily, firmwarePathOrUrl, offset, parts, target }) {
+    // target: "local" | "remote" — never leave the other tab pointing at this image
     if (manifestBlobUrl) {
       URL.revokeObjectURL(manifestBlobUrl);
       manifestBlobUrl = null;
     }
+    const buildParts =
+      parts && parts.length
+        ? parts.map((p) => ({
+            path: cacheBustUrl(p.path),
+            offset: p.offset != null ? p.offset : 0,
+          }))
+        : [{ path: firmwarePathOrUrl, offset: offset != null ? offset : 0 }];
     const manifest = {
       name: name || "Firmware",
       version: String(version || "1.0.0"),
@@ -2320,29 +3048,176 @@
       builds: [
         {
           chipFamily: chipFamily || "ESP32",
-          parts: [{ path: firmwarePathOrUrl, offset: offset != null ? offset : 0 }],
+          parts: buildParts,
         },
       ],
     };
     manifestBlobUrl = URL.createObjectURL(
       new Blob([JSON.stringify(manifest)], { type: "application/json" })
     );
+    installReady = true;
+    const serialOk = "serial" in navigator;
+    const targetId =
+      target === "local"
+        ? "install-btn-local"
+        : target === "remote"
+          ? "install-btn-remote"
+          : target === "home"
+            ? "install-btn-home"
+            : null;
     document.querySelectorAll("esp-web-install-button.hub-install").forEach((btn) => {
+      if (targetId && btn.id !== targetId) {
+        btn.removeAttribute("manifest");
+        btn.style.display = "none";
+        return;
+      }
       btn.setAttribute("manifest", manifestBlobUrl);
-      btn.style.display = "";
+      btn.style.display = serialOk ? "" : "none";
     });
+    const partSummary =
+      buildParts.length > 1
+        ? buildParts.length + " parts"
+        : "@ 0x" + (buildParts[0].offset || 0).toString(16);
     appendLog(
       "Install ready: " +
-        (name || firmwarePathOrUrl) +
-        " @ 0x" +
-        (offset || 0).toString(16) +
+        (name || firmwarePathOrUrl || "pack") +
+        " " +
+        partSummary +
         " (" +
         (chipFamily || "ESP32") +
         ")"
     );
   }
 
-  function setInstallFromBuffer(buffer, label, chipFamily, offset) {
+  function setInstallFromSameOriginPath(binPath, label, chipFamily, offset, version) {
+    setInstallManifestFromParts({
+      name: label || binPath,
+      version: version || "1.0.0",
+      chipFamily: chipFamily || detectChipFamilyForInstall(),
+      firmwarePathOrUrl: cacheBustUrl(binPath),
+      offset: offset != null ? offset : 0,
+      target: "remote",
+    });
+  }
+
+  function setInstallFromLocalPack(pack, version, target) {
+    if (!pack || !pack.parts || !pack.parts.length) return;
+    setInstallManifestFromParts({
+      name: pack.label || "Hosted firmware",
+      version: version || "1.0.0",
+      chipFamily: pack.chipFamily || detectChipFamilyForInstall(),
+      parts: pack.parts,
+      target: target || "remote",
+    });
+  }
+
+  async function localFirmwareAvailable(binPath) {
+    try {
+      // Require a real binary file — SPA/static servers often 200 HTML for missing paths
+      const res = await fetch(binPath, { method: "GET", cache: "no-store", headers: { Range: "bytes=0-15" } });
+      if (!res.ok) return false;
+      const ct = (res.headers.get("content-type") || "").toLowerCase();
+      if (ct.includes("text/html") || ct.includes("application/json")) return false;
+      const buf = await res.arrayBuffer();
+      return buf.byteLength > 0;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async function localPackAvailable(pack) {
+    if (!pack || !Array.isArray(pack.parts) || !pack.parts.length) return false;
+    for (const part of pack.parts) {
+      if (!(await localFirmwareAvailable(part.path))) return false;
+    }
+    return true;
+  }
+
+  let remotePrepareGen = 0;
+
+  /** Prefer exact hosted asset name, else project.localFirmware pack, else file drop */
+  async function prepareRemoteAssetLikeDocs(asset) {
+    // Home/Install views own the install button — don't clobber them from Remote Flash helpers
+    if (!document.getElementById("view-advanced")?.classList.contains("active")) {
+      return;
+    }
+    const gen = ++remotePrepareGen;
+    const needed = document.getElementById("remote-file-needed");
+    const hint = document.getElementById("remote-install-hint");
+    const remoteFn = document.getElementById("remote-filename");
+    const project = getActiveProject();
+    const pack = project && project.localFirmware;
+
+    // Clear immediately so a slow check can't leave another project's install active
+    clearInstallManifest();
+
+    const chip =
+      (project && project.chipFamily) || detectChipFamilyForInstall();
+
+    // 1) Exact file match: firmware/<github-asset-name>
+    if (asset) {
+      const localPath = "firmware/" + asset.name;
+      const hasLocal = await localFirmwareAvailable(localPath);
+      if (gen !== remotePrepareGen) return;
+      if (hasLocal) {
+        const addr = suggestAddressForAsset(asset.name);
+        setInstallFromSameOriginPath(localPath, asset.name, chip, addr, asset.releaseTag || "1.0.0");
+        if (needed) needed.hidden = true;
+        if (hint) {
+          hint.textContent =
+            "Ready: " + asset.name + " from this site. Click Install firmware.";
+        }
+        if (remoteFn) remoteFn.textContent = "Using hosted: " + asset.name;
+        appendLog("Install target: firmware/" + asset.name);
+        return;
+      }
+    }
+
+    // 2) Project pack under firmware/<Project>/... (Arduino multi-part or default merged)
+    if (pack) {
+      const packOk = await localPackAvailable(pack);
+      if (gen !== remotePrepareGen) return;
+      if (packOk) {
+        setInstallFromLocalPack(pack, (asset && asset.releaseTag) || "hosted", "remote");
+        if (needed) needed.hidden = true;
+        if (hint) {
+          hint.textContent =
+            "Ready from this site: " +
+            (pack.label || project.name) +
+            " — click Install firmware.";
+        }
+        if (remoteFn) remoteFn.textContent = "Using hosted: " + (pack.label || project.name);
+        if (!asset && selectedRemoteEl) {
+          selectedRemoteEl.textContent = (pack.label || project.name) + " (hosted)";
+        }
+        appendLog("Install target: hosted pack for " + (project.name || project.id));
+        return;
+      }
+    }
+
+    if (!asset) {
+      if (needed) needed.hidden = true;
+      if (hint) {
+        hint.textContent =
+          "Select a .bin above, or add a localFirmware pack under firmware/ for this project.";
+      }
+      return;
+    }
+
+    if (needed) needed.hidden = false;
+    if (hint) {
+      hint.textContent =
+        "No hosted copy of " +
+        asset.name +
+        ". Drop the .bin file below — Install stays disabled until then.";
+    }
+    if (remoteFn) remoteFn.textContent = "Choose: " + asset.name;
+    appendLog(
+      "No firmware/" + asset.name + " on this site — drop the file to enable Install."
+    );
+  }
+
+  function setInstallFromBuffer(buffer, label, chipFamily, offset, target) {
     revokeInstallUrls();
     const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
     firmwareBlobUrl = URL.createObjectURL(
@@ -2354,8 +3229,9 @@
       chipFamily: chipFamily || detectChipFamilyForInstall(),
       firmwarePathOrUrl: firmwareBlobUrl,
       offset: offset != null ? offset : 0,
+      target: target || "local",
     });
-    if (filenameEl) filenameEl.textContent = label || "custom.bin";
+    if (target !== "remote" && filenameEl) filenameEl.textContent = label || "custom.bin";
   }
 
   function detectChipFamilyForInstall() {
@@ -2376,12 +3252,20 @@
 
   function updateInstallVisibility() {
     const serialOk = "serial" in navigator;
+    const usable = webSerialUsable();
     document.querySelectorAll("esp-web-install-button.hub-install").forEach((btn) => {
-      btn.style.display = serialOk ? "" : "none";
+      const hasManifest = !!btn.getAttribute("manifest");
+      btn.style.display = usable.ok && installReady && hasManifest ? "" : "none";
     });
     const warn = document.getElementById("browser-warn");
     if (warn) warn.style.display = serialOk ? "none" : "block";
+    const warnHome = document.getElementById("browser-warn-home");
+    if (warnHome) {
+      warnHome.textContent =
+        "Plug in the board over USB, then click Install. Hold BOOT if the port picker is empty.";
+    }
   }
+  clearInstallManifest();
   updateInstallVisibility();
 
   function setProgress(p) {
@@ -2545,6 +3429,154 @@
     setStatus(statusTextOverride || "Disconnected");
   }
 
+  /** Release esptool hold but keep the SerialPort object for Install reuse. */
+  async function releaseDeviceHoldKeepPort() {
+    const port = devicePort;
+    try {
+      if (transport) await transport.disconnect();
+    } catch (_) {}
+    transport = null;
+    esploader = null;
+    try {
+      if (port && port.readable) await port.close();
+    } catch (_) {}
+    return port;
+  }
+
+  async function ensureEwtInstallDialog() {
+    if (customElements.get("ewt-install-dialog")) return;
+    const buttonUrl = "https://unpkg.com/esp-web-tools@10/dist/web/install-button.js";
+    let dialogUrl =
+      "https://unpkg.com/esp-web-tools@10/dist/web/install-dialog-im156JnI.js";
+    try {
+      const src = await fetch(buttonUrl).then((r) => r.text());
+      const match = src.match(/import\(["'](\.\/install-dialog[^"']+)["']\)/);
+      if (match) dialogUrl = new URL(match[1], buttonUrl).href;
+    } catch (_) {}
+    await import(dialogUrl);
+    await customElements.whenDefined("ewt-install-dialog");
+  }
+
+  let hubInstallBusy = false;
+
+  async function launchHubInstall(installBtn) {
+    if (hubInstallBusy) return;
+    const manifestPath =
+      installBtn.manifest || installBtn.getAttribute("manifest");
+    if (!manifestPath) {
+      appendLog("Install: select a firmware first.");
+      return;
+    }
+
+    hubInstallBusy = true;
+    try {
+      if (consolePort) {
+        appendLog("Closing serial console to free the port…");
+        await closeConsole();
+      }
+
+      let port = null;
+      let reused = false;
+
+      if (devicePort) {
+        appendLog("Reusing Connect port for Install (no second port picker)…");
+        port = await releaseDeviceHoldKeepPort();
+        devicePort = port;
+        reused = true;
+      } else {
+        try {
+          const granted = await navigator.serial.getPorts();
+          if (granted.length === 1) {
+            port = granted[0];
+            reused = true;
+            appendLog("Using previously authorized port" + portInfoString(port));
+          }
+        } catch (_) {}
+      }
+
+      if (!port) {
+        const usable = webSerialUsable();
+        if (!usable.ok) {
+          alert(usable.reason);
+          return;
+        }
+        setStatus("Requesting port…");
+        try {
+          port = await navigator.serial.requestPort();
+          appendLog("Port selected" + portInfoString(port));
+        } catch (err) {
+          if (err && err.name === "NotFoundError") {
+            appendLog("No port selected.");
+            return;
+          }
+          alert(formatError(err));
+          return;
+        }
+      }
+
+      try {
+        await port.open({ baudRate: 115200, bufferSize: 8192 });
+      } catch (err) {
+        const msg = formatError(err);
+        const hint = hintForError(err);
+        appendLog("Failed to open port for Install: " + msg);
+        if (hint) appendLog("Hint: " + hint);
+        alert(msg + (hint ? "\n\n" + hint : ""));
+        return;
+      }
+
+      await ensureEwtInstallDialog();
+
+      const el = document.createElement("ewt-install-dialog");
+      el.port = port;
+      el.manifestPath = manifestPath;
+      if (installBtn.overrides) el.overrides = installBtn.overrides;
+      el.addEventListener(
+        "closed",
+        async () => {
+          try {
+            await port.close();
+          } catch (_) {}
+          if (devicePort === port) devicePort = null;
+          transport = null;
+          esploader = null;
+          setConnectionUi(false);
+          setStatus("Disconnected");
+          appendLog("Install dialog closed.");
+        },
+        { once: true }
+      );
+      document.body.appendChild(el);
+      setStatus(reused ? "Installing…" : "Installing…");
+    } catch (err) {
+      console.error(err);
+      appendLog("Install launch failed: " + formatError(err));
+      alert(formatError(err));
+    } finally {
+      hubInstallBusy = false;
+    }
+  }
+
+  function wireHubInstallButtons() {
+    document.querySelectorAll("esp-web-install-button.hub-install").forEach((btn) => {
+      if (btn.dataset.hubInstallWired === "1") return;
+      btn.dataset.hubInstallWired = "1";
+      // Capture before esp-web-tools' shadow slot handler calls requestPort().
+      btn.addEventListener(
+        "click",
+        (ev) => {
+          const manifest = btn.manifest || btn.getAttribute("manifest");
+          if (!manifest) return;
+          ev.preventDefault();
+          ev.stopImmediatePropagation();
+          launchHubInstall(btn);
+        },
+        true
+      );
+    });
+  }
+
+
   function addHistoryEntry(entry) {
     history.unshift({
       ...entry,
@@ -2662,10 +3694,16 @@
       id: "esp32-div",
       name: "ESP32-DIV",
       repo: "cifertech/ESP32-DIV",
-      chipFamily: "ESP32",
+      chipFamily: "ESP32-S3",
       description: "Multi-tool ESP32 device with RF + WiFi features.",
-      tags: ["esp32", "rf", "wifi"],
+      tags: ["esp32", "esp32-s3", "rf", "wifi"],
       assetFilter: ".bin",
+      localFirmware: {
+        label: "ESP32-DIV v2 (hosted merged)",
+        chipFamily: "ESP32-S3",
+        parts: [{ path: "firmware/ESP32-DIV-v2-v1.7.0-merged.bin", offset: 0 }],
+        download: "firmware/ESP32-DIV-v2-v1.7.0-merged.bin",
+      },
     },
     {
       id: "nrfbox",
@@ -2675,6 +3713,17 @@
       description: "Wireless toolbox with NRF + ESP32 firmware.",
       tags: ["esp32", "nrf", "wireless"],
       assetFilter: ".bin",
+      localFirmware: {
+        label: "nRFBox (hosted Arduino build)",
+        chipFamily: "ESP32",
+        parts: [
+          { path: "firmware/nRFBox/esp32.esp32.esp32/nRFBox.ino.bootloader.bin", offset: 4096 },
+          { path: "firmware/nRFBox/esp32.esp32.esp32/nRFBox.ino.partitions.bin", offset: 32768 },
+          { path: "firmware/boot_app0.bin", offset: 57344 },
+          { path: "firmware/nRFBox/esp32.esp32.esp32/nRFBox.ino.bin", offset: 65536 },
+        ],
+        download: "firmware/nRFBox/esp32.esp32.esp32/nRFBox.ino.bin",
+      },
     },
     {
       id: "rf-clown",
@@ -2684,6 +3733,57 @@
       description: "RF experimentation device for CiferTech.",
       tags: ["esp32", "rf"],
       assetFilter: ".bin",
+      localFirmware: {
+        label: "RF-Clown (hosted Arduino build)",
+        chipFamily: "ESP32",
+        parts: [
+          { path: "firmware/RfClown/esp32.esp32.esp32/RfClown.ino.bootloader.bin", offset: 4096 },
+          { path: "firmware/RfClown/esp32.esp32.esp32/RfClown.ino.partitions.bin", offset: 32768 },
+          { path: "firmware/boot_app0.bin", offset: 57344 },
+          { path: "firmware/RfClown/esp32.esp32.esp32/RfClown.ino.bin", offset: 65536 },
+        ],
+        download: "firmware/RfClown/esp32.esp32.esp32/RfClown.ino.bin",
+      },
+    },
+    {
+      id: "evilduck-s3",
+      name: "EvilDuck S3",
+      repo: "cifertech/EvilDuck",
+      chipFamily: "ESP32-S3",
+      description: "ESP32-S3 USB rubber ducky with WiFi control panel.",
+      tags: ["esp32", "esp32-s3", "badusb", "hid"],
+      assetFilter: ".bin",
+      localFirmware: {
+        label: "EvilDuck S3 (hosted Arduino build)",
+        chipFamily: "ESP32-S3",
+        parts: [
+          { path: "firmware/EvilDuckS3/esp32.esp32.esp32s3/EvilDuckS3.ino.bootloader.bin", offset: 0 },
+          { path: "firmware/EvilDuckS3/esp32.esp32.esp32s3/EvilDuckS3.ino.partitions.bin", offset: 32768 },
+          { path: "firmware/boot_app0.bin", offset: 57344 },
+          { path: "firmware/EvilDuckS3/esp32.esp32.esp32s3/EvilDuckS3.ino.bin", offset: 65536 },
+        ],
+        download: "firmware/EvilDuckS3/esp32.esp32.esp32s3/EvilDuckS3.ino.bin",
+      },
+    },
+    {
+      id: "tamafi",
+      name: "TamaFi",
+      repo: "cifertech/TamaFi",
+      chipFamily: "ESP32-S3",
+      description: "WiFi-enabled virtual pet on ESP32-S3 with TFT UI and autonomous behavior.",
+      tags: ["esp32", "esp32-s3", "wifi", "virtual-pet"],
+      assetFilter: ".bin",
+      localFirmware: {
+        label: "TamaFi (hosted Arduino build)",
+        chipFamily: "ESP32-S3",
+        parts: [
+          { path: "firmware/TamaFi/esp32.esp32.esp32s3/TamaFi.ino.bootloader.bin", offset: 0 },
+          { path: "firmware/TamaFi/esp32.esp32.esp32s3/TamaFi.ino.partitions.bin", offset: 32768 },
+          { path: "firmware/boot_app0.bin", offset: 57344 },
+          { path: "firmware/TamaFi/esp32.esp32.esp32s3/TamaFi.ino.bin", offset: 65536 },
+        ],
+        download: "firmware/TamaFi/esp32.esp32.esp32s3/TamaFi.ino.bin",
+      },
     },
   ];
 
@@ -2765,6 +3865,269 @@
     }
   }
 
+  function showAppView(name) {
+    ["home", "install", "advanced"].forEach((id) => {
+      const el = document.getElementById("view-" + id);
+      if (!el) return;
+      const on = id === name;
+      el.classList.toggle("active", on);
+      if (on) el.removeAttribute("hidden");
+      else el.setAttribute("hidden", "");
+    });
+  }
+
+  function resolveHomePack(project) {
+    if (!project) return null;
+    if (project.id === "esp32-div") {
+      return DIV_BOARD_PACKS[selectedDivBoard] || DIV_BOARD_PACKS.v2;
+    }
+    return project.localFirmware || null;
+  }
+
+  function getProjectTheme(projectId) {
+    switch (projectId) {
+      case "esp32-div":
+        return "theme-div";
+      case "nrfbox":
+        return "theme-nrf";
+      case "rf-clown":
+        return "theme-rf";
+      case "evilduck-s3":
+        return "theme-duck";
+      case "tamafi":
+        return "theme-tama";
+      default:
+        return "theme-default";
+    }
+  }
+
+  function getProjectArtSrc(projectId) {
+    switch (projectId) {
+      case "esp32-div":
+        return "assets/esp32div.png";
+      case "nrfbox":
+        return "assets/nrfbox.png";
+      case "rf-clown":
+        return "assets/rfclown.png";
+      case "evilduck-s3":
+        return "assets/evilduck.png";
+      case "tamafi":
+        return "assets/tamafi.png";
+      default:
+        return null;
+    }
+  }
+
+  function getProjectArtSvg(projectId) {
+    const src = getProjectArtSrc(projectId);
+    if (!src) {
+      return (
+        '<svg viewBox="0 0 120 96" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<rect x="36" y="30" width="48" height="36" rx="6" stroke="#ee3a17" stroke-width="2.5" fill="rgba(238,58,23,0.12)"/>' +
+        '<path d="M48 48h24M60 36v24" stroke="#ee3a17" stroke-width="2.5" stroke-linecap="round"/>' +
+        "</svg>"
+      );
+    }
+    return (
+      '<img class="project-art-img" src="' +
+      src +
+      '" alt="" width="112" height="112" decoding="async" loading="lazy" />'
+    );
+  }
+
+  async function renderHomeProjectGrid() {
+    if (!homeProjectGrid) return;
+    homeProjectGrid.innerHTML = "";
+    if (!projectCatalog.length) {
+      const empty = document.createElement("div");
+      empty.className = "value-soft";
+      empty.textContent = "No projects found.";
+      homeProjectGrid.appendChild(empty);
+      return;
+    }
+
+    projectCatalog.forEach((project, index) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "home-project-card " + getProjectTheme(project.id);
+      btn.style.setProperty("--i", String(index));
+      btn.setAttribute("data-project-id", project.id);
+
+      const art = document.createElement("div");
+      art.className = "home-project-card__art";
+      art.setAttribute("aria-hidden", "true");
+      const artInner = document.createElement("div");
+      artInner.className = "home-project-card__art-inner";
+      artInner.innerHTML = getProjectArtSvg(project.id);
+      art.appendChild(artInner);
+
+      const body = document.createElement("div");
+      body.className = "home-project-card__body";
+
+      const top = document.createElement("div");
+      top.className = "home-project-card__top";
+      const name = document.createElement("div");
+      name.className = "home-project-card__name";
+      name.textContent = project.name;
+      const chip = document.createElement("span");
+      chip.className = "home-project-card__chip";
+      chip.textContent = project.chipFamily || "ESP32";
+      top.appendChild(name);
+      top.appendChild(chip);
+
+      const desc = document.createElement("div");
+      desc.className = "home-project-card__desc";
+      desc.textContent = project.description || project.repo || "";
+
+      const foot = document.createElement("div");
+      foot.className = "home-project-card__foot";
+      const status = document.createElement("div");
+      status.className = "home-project-card__status";
+      status.textContent = "Checking…";
+      const cta = document.createElement("span");
+      cta.className = "home-project-card__cta";
+      cta.textContent = "Install →";
+      foot.appendChild(status);
+      foot.appendChild(cta);
+
+      body.appendChild(top);
+      body.appendChild(desc);
+      body.appendChild(foot);
+
+      btn.appendChild(art);
+      btn.appendChild(body);
+      btn.addEventListener("click", () => openProjectInstall(project));
+      btn.addEventListener(
+        "animationend",
+        () => {
+          btn.classList.add("is-settled");
+        },
+        { once: true }
+      );
+      homeProjectGrid.appendChild(btn);
+
+      const pack =
+        project.id === "esp32-div" ? DIV_BOARD_PACKS.v2 : project.localFirmware;
+      localPackAvailable(pack).then((ok) => {
+        if (!homeProjectGrid.contains(btn)) return;
+        if (ok) {
+          status.textContent = "Ready";
+          status.classList.remove("is-missing");
+        } else {
+          status.textContent = "Not hosted";
+          status.classList.add("is-missing");
+        }
+      });
+    });
+  }
+
+  async function prepareHomeInstall(project) {
+    const gen = ++homeInstallGen;
+    clearInstallManifest();
+    if (installStatusMsg) {
+      installStatusMsg.classList.remove("is-error", "is-ready");
+      installStatusMsg.textContent = "Preparing firmware…";
+    }
+    if (installBtnHome) installBtnHome.style.display = "none";
+
+    const pack = resolveHomePack(project);
+    if (!pack) {
+      if (gen !== homeInstallGen) return;
+      if (installStatusMsg) {
+        installStatusMsg.classList.remove("is-ready");
+        installStatusMsg.classList.add("is-error");
+        installStatusMsg.textContent =
+          "No hosted firmware for this project. Use Advanced tools → Local Flash.";
+      }
+      return;
+    }
+
+    const ok = await localPackAvailable(pack);
+    if (gen !== homeInstallGen) return;
+    if (!ok) {
+      if (installStatusMsg) {
+        installStatusMsg.classList.remove("is-ready");
+        installStatusMsg.classList.add("is-error");
+        installStatusMsg.textContent =
+          "Hosted firmware files are missing under firmware/. Add them or use Advanced tools.";
+      }
+      return;
+    }
+
+    setInstallFromLocalPack(pack, "hosted", "home");
+    if (installStatusMsg) {
+      installStatusMsg.classList.remove("is-error");
+      installStatusMsg.classList.add("is-ready");
+      installStatusMsg.textContent = "Ready — click Install firmware.";
+    }
+    updateInstallVisibility();
+  }
+
+  async function openProjectInstall(project) {
+    if (!project) return;
+    setActiveProject(project, { trigger: "home", silent: true });
+    selectedDivBoard = "v2";
+    if (installProjectName) installProjectName.textContent = project.name;
+    if (installProjectChip) installProjectChip.textContent = project.chipFamily || "ESP32";
+    if (installProjectDesc) installProjectDesc.textContent = project.description || "";
+    if (installProjectRepo) {
+      installProjectRepo.href = "https://github.com/" + project.repo;
+      installProjectRepo.textContent = project.repo;
+    }
+    const artSrc = getProjectArtSrc(project.id);
+    if (installProjectArt && installProjectArtImg) {
+      if (artSrc) {
+        installProjectArtImg.src = artSrc;
+        installProjectArtImg.hidden = false;
+        installProjectArt.hidden = false;
+      } else {
+        installProjectArtImg.removeAttribute("src");
+        installProjectArtImg.hidden = true;
+        installProjectArt.hidden = true;
+      }
+    }
+    if (installBoardBlock) {
+      const showBoards = project.id === "esp32-div";
+      installBoardBlock.hidden = !showBoards;
+      if (showBoards && installBoardPicker) {
+        installBoardPicker.querySelectorAll(".board-pick").forEach((b) => {
+          b.classList.toggle("is-active", b.getAttribute("data-div-board") === selectedDivBoard);
+        });
+      }
+    }
+    showAppView("install");
+    await prepareHomeInstall(project);
+  }
+
+  installBoardPicker?.addEventListener("click", (e) => {
+    const pick = e.target.closest(".board-pick");
+    if (!pick) return;
+    const key = pick.getAttribute("data-div-board");
+    if (!key || !DIV_BOARD_PACKS[key]) return;
+    selectedDivBoard = key;
+    installBoardPicker.querySelectorAll(".board-pick").forEach((b) => {
+      b.classList.toggle("is-active", b === pick);
+    });
+    const project = getActiveProject();
+    if (project) prepareHomeInstall(project);
+  });
+
+  openAdvancedBtn?.addEventListener("click", () => {
+    showAppView("advanced");
+    const project = getActiveProject();
+    if (project) handleRepoChange({ silent: true, trigger: "advanced" });
+  });
+  advancedBackBtn?.addEventListener("click", () => {
+    clearInstallManifest();
+    showAppView("home");
+    renderHomeProjectGrid();
+  });
+  installBackBtn?.addEventListener("click", () => {
+    clearInstallManifest();
+    showAppView("home");
+    renderHomeProjectGrid();
+  });
+
   function renderProjectCards() {
     if (!projectCards) return;
     projectCards.innerHTML = "";
@@ -2835,6 +4198,8 @@
       setActiveProject(match, { trigger: "init", silent: true });
     }
     renderProjectCards();
+    renderHomeProjectGrid();
+    showAppView("home");
   }
 
   async function loadProjectCatalog() {
@@ -2862,29 +4227,20 @@
       item.style.borderLeftColor = "transparent";
     });
     if (target) {
-      target.style.borderColor = "rgba(249,115,22,0.4)";
+      target.style.borderColor = "rgba(238,58,23,0.4)";
       target.style.borderLeftColor = "var(--accent)";
     }
   }
 
   function selectRemoteAsset(asset, listItem) {
-    const remoteDl = document.getElementById("remote-dl-btn");
     if (asset) {
       selectedRemoteEl.textContent =
         asset.name + " (" + (asset.releaseTag || "release") + ")";
       if (flashAddressInput) {
         flashAddressInput.value = "0x" + suggestAddressForAsset(asset.name).toString(16);
       }
-      if (remoteDl && asset.url) {
-        remoteDl.href = asset.url;
-        remoteDl.style.display = "";
-      }
     } else {
       selectedRemoteEl.textContent = "—";
-      if (remoteDl) {
-        remoteDl.href = "#";
-        remoteDl.style.display = "none";
-      }
     }
     selectedRemoteAsset = asset || null;
     if (asset && asset.releaseTag) {
@@ -2893,6 +4249,7 @@
     highlightGithubSelection(listItem);
     updateReleaseSetPreview();
     updateRemoteActionsUi();
+    prepareRemoteAssetLikeDocs(asset);
   }
 
   /** Bootloader offset: classic ESP32 @ 0x1000, newer chips (S2/S3/C3/…) @ 0x0. */
@@ -3214,6 +4571,19 @@
           addr.className = "label-chip mono";
           addr.textContent = "0x" + suggestAddressForAsset(a.name).toString(16);
           right.appendChild(addr);
+
+          // Docs-style per-asset download link (browser navigation, not fetch)
+          if (a.url) {
+            const dl = document.createElement("a");
+            dl.className = "label-chip";
+            dl.href = a.url;
+            dl.target = "_blank";
+            dl.rel = "noopener";
+            dl.textContent = "⬇";
+            dl.title = "Download " + a.name;
+            dl.addEventListener("click", (e) => e.stopPropagation());
+            right.appendChild(dl);
+          }
         } else {
           item.setAttribute("aria-disabled", "true");
           const badge = document.createElement("span");
@@ -3441,10 +4811,12 @@
       githubAssets = [];
       activeReleaseTag = null;
       if (remoteAssetsLabel) remoteAssetsLabel.textContent = "Available .bin assets";
+      // Still enable Install from firmware/ packs even if GitHub is down
+      selectRemoteAsset(null, null);
       if (!silent) {
         alert("Error loading releases.");
       }
-      setRemoteRefreshStatus("Refresh failed");
+      setRemoteRefreshStatus("Refresh failed — using hosted firmware if available");
       return false;
     } finally {
       if (!silent && loadReleasesBtn) {
@@ -3456,8 +4828,17 @@
   }
 
   function handleRepoChange({ silent = false, trigger = "manual" } = {}) {
+    // Drop any previous project's install target (e.g. ESP32-DIV) immediately
+    // Skip clearing while the simple Install view is active
+    if (!document.getElementById("view-install")?.classList.contains("active")) {
+      clearInstallManifest();
+      selectedRemoteAsset = null;
+    }
     loadGitHubReleases({ silent, trigger }).then((success) => {
       if (success) startRemoteAutoRefresh();
+      else if (document.getElementById("view-advanced")?.classList.contains("active")) {
+        prepareRemoteAssetLikeDocs(null);
+      }
     });
   }
 
@@ -3485,6 +4866,7 @@
   }
 
   loadProjectCatalog().then(() => {
+    // Warm GitHub cache quietly; home UI does not need releases to install
     handleRepoChange({ silent: true, trigger: "init" });
   });
 
@@ -3609,7 +4991,7 @@
 
   dropzone.addEventListener("dragover", (e) => {
     e.preventDefault();
-    dropzone.style.borderColor = "#fb923c";
+    dropzone.style.borderColor = "#ff4d2a";
   });
   dropzone.addEventListener("dragleave", () => {
     dropzone.style.borderColor = "rgba(148,163,184,0.6)";
@@ -3642,7 +5024,8 @@
         firmwareBuffer,
         firmwareName,
         detectChipFamilyForInstall(),
-        parseHexOrDec(flashAddressInput?.value || "0")
+        parseHexOrDec(flashAddressInput?.value || "0"),
+        "local"
       );
       appendLog("Ready — click Install firmware (esp-web-tools), same as docs.");
     } catch (_) {}
@@ -3947,35 +5330,50 @@
   };
 
   // ========= GITHUB RELEASES / OTA =========
-  document.getElementById("flashRemoteBtn").onclick = async () => {
-    if (!selectedRemoteAsset) {
-      alert("Select a remote firmware from the list first.");
+  // Remote file drop (when release isn't hosted under firmware/) — then Install like docs
+  async function loadRemoteFileForInstall(file) {
+    if (!file || !String(file.name || "").toLowerCase().endsWith(".bin")) {
+      alert("Please choose a .bin file.");
       return;
     }
-    try {
-      // Docs hosts firmware same-origin. GitHub releases can't be fetched (CORS),
-      // so we load bytes into a blob: URL — then esp-web-tools installs exactly like docs.
-      appendLog("Preparing remote firmware for esp-web-tools: " + selectedRemoteAsset.name);
-      setStatus("Preparing firmware…");
-      const buf = await downloadRemoteFirmware(selectedRemoteAsset);
-      appendLog("Prepared (" + buf.byteLength + " bytes).");
-      firmwareBuffer = buf;
-      firmwareName = selectedRemoteAsset.name;
-      if (filenameEl) filenameEl.textContent = firmwareName;
-      const chip =
-        (projectCatalog.find((p) => p.repo === (repoInput?.value || "").trim()) || {}).chipFamily ||
-        detectChipFamilyForInstall();
-      const addr = suggestAddressForAsset(selectedRemoteAsset.name);
-      if (flashAddressInput) flashAddressInput.value = "0x" + addr.toString(16);
-      setInstallFromBuffer(buf, selectedRemoteAsset.name, chip, addr);
-      addHistoryEntry({ type: "remote", name: selectedRemoteAsset.name });
-      appendLog("Ready — click Install firmware (esp-web-tools). No Connect step needed.");
-      setStatus("Ready to install", "connected");
-    } catch (e) {
-      const msg = formatError(e);
-      appendLog("Prepare failed: " + msg);
-      setStatus("Prepare failed", "error");
-    }
+    const buf = await file.arrayBuffer();
+    const chip =
+      (projectCatalog.find((p) => p.repo === (repoInput?.value || "").trim()) || {}).chipFamily ||
+      detectChipFamilyForInstall();
+    const addr = selectedRemoteAsset
+      ? suggestAddressForAsset(selectedRemoteAsset.name)
+      : parseHexOrDec(flashAddressInput?.value || "0");
+    setInstallFromBuffer(buf, file.name, chip, addr, "remote");
+    const remoteFn = document.getElementById("remote-filename");
+    if (remoteFn) remoteFn.textContent = file.name + " (" + file.size + " bytes)";
+    appendLog("Loaded for install: " + file.name + " — click Install firmware.");
+    setStatus("Ready to install", "connected");
+  }
+
+  const remoteDropzone = document.getElementById("remote-dropzone");
+  const remoteFirmwareInput = document.getElementById("remoteFirmwareInput");
+  remoteDropzone?.addEventListener("click", () => remoteFirmwareInput?.click());
+  remoteDropzone?.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    remoteDropzone.style.borderColor = "#ff4d2a";
+  });
+  remoteDropzone?.addEventListener("dragleave", () => {
+    remoteDropzone.style.borderColor = "";
+  });
+  remoteDropzone?.addEventListener("drop", async (e) => {
+    e.preventDefault();
+    remoteDropzone.style.borderColor = "";
+    const file = e.dataTransfer.files[0];
+    if (file) await loadRemoteFileForInstall(file);
+  });
+  remoteFirmwareInput?.addEventListener("change", async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) await loadRemoteFileForInstall(file);
+  });
+
+  // Kept for compatibility; hidden — use remote dropzone instead
+  document.getElementById("flashRemoteBtn").onclick = async () => {
+    remoteFirmwareInput?.click();
   };
 
   document.getElementById("flashFullSetBtn").onclick = async () => {
@@ -4500,6 +5898,7 @@
   // ========= INIT =========
   setConnectionUi(false);
   setStatus("Idle");
+  wireHubInstallButtons();
 
   // Update UI immediately if WebSerial can't work in this context.
   const usable = webSerialUsable();

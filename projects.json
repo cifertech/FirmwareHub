@@ -6,7 +6,15 @@
     "chipFamily": "ESP32-S3",
     "description": "Multi-tool ESP32 device with RF + WiFi features.",
     "tags": ["esp32", "esp32-s3", "rf", "wifi"],
-    "assetFilter": ".bin"
+    "assetFilter": ".bin",
+    "localFirmware": {
+      "label": "ESP32-DIV v2 (hosted merged)",
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        { "path": "firmware/ESP32-DIV-v2-v1.7.0-merged.bin", "offset": 0 }
+      ],
+      "download": "firmware/ESP32-DIV-v2-v1.7.0-merged.bin"
+    }
   },
   {
     "id": "nrfbox",
@@ -15,7 +23,18 @@
     "chipFamily": "ESP32",
     "description": "Wireless toolbox with NRF + ESP32 firmware.",
     "tags": ["esp32", "nrf", "wireless"],
-    "assetFilter": ".bin"
+    "assetFilter": ".bin",
+    "localFirmware": {
+      "label": "nRFBox (hosted Arduino build)",
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "firmware/nRFBox/esp32.esp32.esp32/nRFBox.ino.bootloader.bin", "offset": 4096 },
+        { "path": "firmware/nRFBox/esp32.esp32.esp32/nRFBox.ino.partitions.bin", "offset": 32768 },
+        { "path": "firmware/boot_app0.bin", "offset": 57344 },
+        { "path": "firmware/nRFBox/esp32.esp32.esp32/nRFBox.ino.bin", "offset": 65536 }
+      ],
+      "download": "firmware/nRFBox/esp32.esp32.esp32/nRFBox.ino.bin"
+    }
   },
   {
     "id": "rf-clown",
@@ -24,6 +43,57 @@
     "chipFamily": "ESP32",
     "description": "RF experimentation device for CiferTech.",
     "tags": ["esp32", "rf"],
-    "assetFilter": ".bin"
+    "assetFilter": ".bin",
+    "localFirmware": {
+      "label": "RF-Clown (hosted Arduino build)",
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "firmware/RfClown/esp32.esp32.esp32/RfClown.ino.bootloader.bin", "offset": 4096 },
+        { "path": "firmware/RfClown/esp32.esp32.esp32/RfClown.ino.partitions.bin", "offset": 32768 },
+        { "path": "firmware/boot_app0.bin", "offset": 57344 },
+        { "path": "firmware/RfClown/esp32.esp32.esp32/RfClown.ino.bin", "offset": 65536 }
+      ],
+      "download": "firmware/RfClown/esp32.esp32.esp32/RfClown.ino.bin"
+    }
+  },
+  {
+    "id": "evilduck-s3",
+    "name": "EvilDuck S3",
+    "repo": "cifertech/EvilDuck",
+    "chipFamily": "ESP32-S3",
+    "description": "ESP32-S3 USB rubber ducky with WiFi control panel.",
+    "tags": ["esp32", "esp32-s3", "badusb", "hid"],
+    "assetFilter": ".bin",
+    "localFirmware": {
+      "label": "EvilDuck S3 (hosted Arduino build)",
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        { "path": "firmware/EvilDuckS3/esp32.esp32.esp32s3/EvilDuckS3.ino.bootloader.bin", "offset": 0 },
+        { "path": "firmware/EvilDuckS3/esp32.esp32.esp32s3/EvilDuckS3.ino.partitions.bin", "offset": 32768 },
+        { "path": "firmware/boot_app0.bin", "offset": 57344 },
+        { "path": "firmware/EvilDuckS3/esp32.esp32.esp32s3/EvilDuckS3.ino.bin", "offset": 65536 }
+      ],
+      "download": "firmware/EvilDuckS3/esp32.esp32.esp32s3/EvilDuckS3.ino.bin"
+    }
+  },
+  {
+    "id": "tamafi",
+    "name": "TamaFi",
+    "repo": "cifertech/TamaFi",
+    "chipFamily": "ESP32-S3",
+    "description": "WiFi-enabled virtual pet on ESP32-S3 with TFT UI and autonomous behavior.",
+    "tags": ["esp32", "esp32-s3", "wifi", "virtual-pet"],
+    "assetFilter": ".bin",
+    "localFirmware": {
+      "label": "TamaFi (hosted Arduino build)",
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        { "path": "firmware/TamaFi/esp32.esp32.esp32s3/TamaFi.ino.bootloader.bin", "offset": 0 },
+        { "path": "firmware/TamaFi/esp32.esp32.esp32s3/TamaFi.ino.partitions.bin", "offset": 32768 },
+        { "path": "firmware/boot_app0.bin", "offset": 57344 },
+        { "path": "firmware/TamaFi/esp32.esp32.esp32s3/TamaFi.ino.bin", "offset": 65536 }
+      ],
+      "download": "firmware/TamaFi/esp32.esp32.esp32s3/TamaFi.ino.bin"
+    }
   }
 ]
