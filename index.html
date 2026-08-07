@@ -3478,20 +3478,25 @@
       let port = null;
       let reused = false;
 
+      // Only skip the picker when Connect already holds this board open.
       if (devicePort) {
-        appendLog("Reusing Connect port for Install (no second port picker)…");
+        appendLog("Reusing Connect port for Install…");
         port = await releaseDeviceHoldKeepPort();
         devicePort = port;
         reused = true;
-      } else {
         try {
-          const granted = await navigator.serial.getPorts();
-          if (granted.length === 1) {
-            port = granted[0];
-            reused = true;
-            appendLog("Using previously authorized port" + portInfoString(port));
-          }
-        } catch (_) {}
+          await port.open({ baudRate: 115200, bufferSize: 8192 });
+        } catch (err) {
+          appendLog(
+            "Could not reuse Connect port (" + formatError(err) + ") — choose a port…"
+          );
+          try {
+            await port.close();
+          } catch (_) {}
+          if (devicePort === port) devicePort = null;
+          port = null;
+          reused = false;
+        }
       }
 
       if (!port) {
@@ -3512,17 +3517,17 @@
           alert(formatError(err));
           return;
         }
-      }
 
-      try {
-        await port.open({ baudRate: 115200, bufferSize: 8192 });
-      } catch (err) {
-        const msg = formatError(err);
-        const hint = hintForError(err);
-        appendLog("Failed to open port for Install: " + msg);
-        if (hint) appendLog("Hint: " + hint);
-        alert(msg + (hint ? "\n\n" + hint : ""));
-        return;
+        try {
+          await port.open({ baudRate: 115200, bufferSize: 8192 });
+        } catch (err) {
+          const msg = formatError(err);
+          const hint = hintForError(err);
+          appendLog("Failed to open port for Install: " + msg);
+          if (hint) appendLog("Hint: " + hint);
+          alert(msg + (hint ? "\n\n" + hint : ""));
+          return;
+        }
       }
 
       await ensureEwtInstallDialog();
@@ -3547,7 +3552,7 @@
         { once: true }
       );
       document.body.appendChild(el);
-      setStatus(reused ? "Installing…" : "Installing…");
+      setStatus("Installing…");
     } catch (err) {
       console.error(err);
       appendLog("Install launch failed: " + formatError(err));
@@ -3912,7 +3917,7 @@
       case "evilduck-s3":
         return "assets/evilduck.png";
       case "tamafi":
-        return "assets/tamafi.png";
+        return "assets/tamafi.png?v=2";
       default:
         return null;
     }
